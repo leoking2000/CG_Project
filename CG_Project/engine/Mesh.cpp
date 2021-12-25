@@ -426,10 +426,10 @@ namespace VE
 
 		if (use_mat)
 		{
-			shader.SetUniform("mat.ambient", 0.1f);
+			shader.SetUniform("mat.ambient", 0.3f);
 			shader.SetUniform("mat.texture_diffuse", 0);
-			shader.SetUniform("mat.texture_specular", 1);
-			shader.SetUniform("mat.shininess", 200.0f);
+			//shader.SetUniform("mat.texture_specular", 1);
+			//shader.SetUniform("mat.shininess", 200.0f);
 		}
 
 

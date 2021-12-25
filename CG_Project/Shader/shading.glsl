@@ -4,6 +4,7 @@
 layout(location = 0) in vec3 apos;
 layout(location = 1) in vec2 atex_cord;
 layout(location = 2) in vec3 anormal;
+layout(location = 2) in vec3 atangent;
 
 uniform mat4 model;
 uniform mat4 view;
@@ -45,14 +46,8 @@ in vec4 world_pos_l; // light space
 in vec3 light_pos;
 
 uniform sampler2D shadowMap;
-
-struct Material 
-{
-    float ambient;
-    sampler2D texture_diffuse;
-    sampler2D texture_specular;
-    float shininess;
-};
+uniform sampler2D texture_diffuse;
+uniform sampler2D texture_mask;
 
 struct PointLight
 {
@@ -87,38 +82,9 @@ float ShadowCalculation(vec4 fragPosLightSpace)
     return shadow;
 } 
 
-vec4 point_light()
-{
-
-    float shadow = ShadowCalculation(world_pos_l);
-
-    vec3 diffuse_color = texture(mat.texture_diffuse, tex_cord).xyz;
-
-    if(shadow == 1.0)
-    {
-        return vec4(mat.ambient * diffuse_color, 1.0);
-    }
-
-    vec3 specular_color = texture(mat.texture_specular, tex_cord).xyz;
-
-    vec3 lightVec = light_pos - world_pos;
-    vec3 lightDir = normalize(lightVec);
-    float dist = length(lightVec);
-    float inten = 1.0 / ( light.quadratic_term * dist * dist + light.linear_term * dist + 1.0);
-
-    vec3 surf_normal = normalize(normal);
-    float diff_power = max(0.0, dot(surf_normal, lightDir));
-    vec3 diffuse = diffuse_color * (diff_power + mat.ambient);
-
-    vec3 viewDir = normalize(-world_pos);
-    vec3 reflectDir = reflect(-lightDir, surf_normal);
-    float spec_power = pow( max(0.0, dot(viewDir, reflectDir)), mat.shininess);
-    vec3 specular = specular_color * spec_power * 0.5;
-
-    return vec4((diffuse) * light.light_color, 1.0);
-}
-
 void main()
 {
-    out_color = point_light();
+
+
+
 }

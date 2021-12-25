@@ -35,7 +35,8 @@ namespace VE
 		VE::Camera cam;
 
 		// light
-		VE::PointLight light{ { 0.0f, 0.0f, 0.0f } };
+		VE::PointLight light{ { 0.0f, 500.0f, -100.0f } };
+		float bias = 0.0f;
 
 		std::vector<Model> models;
 
@@ -62,7 +63,7 @@ namespace VE
 
 		// Shadows
 		VE::Shader shadow_shader{ "Shader/shadow_map.glsl" };
-		static constexpr u32 SHADOW_SIZE = 1024;
+		static constexpr u32 SHADOW_SIZE = 4096;
 		FrameBuffer shadow_map{ SHADOW_SIZE, SHADOW_SIZE, true };
 
 	private:

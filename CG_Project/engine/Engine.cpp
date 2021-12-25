@@ -133,11 +133,12 @@ namespace VE
 
 			shadow_map.BindDepthTexture(5);
 			basic.SetUniform("shadowMap", 5);
+			basic.SetUniform("bias", 0.000005f);
 			basic.SetUniform("lightSpaceMatrix", lightSpaceMatrix);
 			basic.SetUniform("u_light_pos", light.position);
 			basic.SetUniform("light.light_color", light.color);
-			basic.SetUniform("light.quadratic_term", light.quadratic_term);
-			basic.SetUniform("light.linear_term", light.linear_term);
+			//basic.SetUniform("light.quadratic_term", light.quadratic_term);
+			//basic.SetUniform("light.linear_term", light.linear_term);
 
 			obj.Draw(cam.GetCameraView(), proj, basic);
 		}
@@ -155,6 +156,7 @@ namespace VE
 		vao_post_process.Bind();
 
 		core_frame_buffer.BindColorTexture(0);
+		//shadow_map.BindDepthTexture(0);
 		post_process.SetUniform("uniform_texture", 0);
 
 		//post_process.SetUniform("uniform_time", continous_time);

@@ -3,19 +3,14 @@
 class Game : public VE::Engine
 {
 private:
-	VE::Model craft{ "assets/Game/craft.obj" };
-	glm::mat4 model_craft;
-
-	VE::Model terrain{ "assets/Game/terrain.obj" };
-	glm::mat4 model_terrain;
 
 public:
 	Game()
 		:
 	VE::Engine(1600, 900, "Computer Graphics Project", true, std::vector<std::string>() )
 	{
-		light.position = glm::vec3(0.0f, 150.0f, 0.0f);
-		light.quadratic_term = 0.0f;
+		//light.position = glm::vec3(0.0f, 150.0f, 0.0f);
+		//light.quadratic_term = 0.0f;
 
 		models.emplace_back("assets/craft.obj");
 		glm::mat4 model_craft = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 50.0f, 0.0f));
