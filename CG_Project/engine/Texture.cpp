@@ -5,18 +5,14 @@
 namespace VE
 {
 	Texture::Texture(const std::string& file_name)
-		:
-		m_name(std::move(file_name))
 	{
-		reload();
+		m_id = 0;
+		reload(file_name);
 	}
 
 	Texture::Texture(Texture&& other)
 		:
-		m_id(other.m_id),
-		m_width(other.m_width),
-		m_height(other.m_height),
-		m_name(std::move(other.m_name))
+		m_id(other.m_id)
 	{
 		other.m_id = 0;
 	}
@@ -26,9 +22,6 @@ namespace VE
 		glCall(glDeleteTextures(1, &m_id));
 
 		m_id = other.m_id;
-		m_width = other.m_width;
-		m_height = other.m_height;
-		m_name = std::move(other.m_name);
 
 		other.m_id = 0;
 
@@ -40,20 +33,19 @@ namespace VE
 		glCall(glDeleteTextures(1, &m_id));
 	}
 
-	void Texture::reload()
+	void Texture::reload(const std::string& file_name)
 	{
+		glCall(glDeleteTextures(1, &m_id));
+
 		stbi_set_flip_vertically_on_load(1);
 
 		int width;
 		int height;
 		int bpp;
 
-		stbi_uc* data = stbi_load(m_name.c_str(), &width, &height, &bpp, 4);
+		stbi_uc* data = stbi_load(file_name.c_str(), &width, &height, &bpp, 4);
 
 		assert(data != nullptr);
-
-		m_width = width;
-		m_height = height;
 
 		glCall(glGenTextures(1, &m_id));
 		glCall(glBindTexture(GL_TEXTURE_2D, m_id));
@@ -70,7 +62,7 @@ namespace VE
 		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
 		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
 
-		glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
+		glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
 		glCall(glBindTexture(GL_TEXTURE_2D, 0));
 
 		stbi_image_free(data);
@@ -167,6 +159,34 @@ namespace VE
 
 		return *this;
 	}
+	
+	Texture& TextureManager::GetTexture(const std::string& name)
+	{
+		TextureManager& manager = TextureManager::get();
+
+		if (manager.m_textures.find(name) != manager.m_textures.end())
+		{
+			return manager.m_textures.at(name);
+		}
+
+		manager.m_textures.insert({ name, Texture(name) });
+
+		return manager.m_textures.at(name);
+	}
+
+	void TextureManager::Clear()
+	{
+		TextureManager::get().m_textures.clear();
+	}
+
+	TextureManager& TextureManager::get()
+	{
+		static TextureManager manager;
+
+		return manager;
+	}
+
+	///////////////////////////////////////////////////////////////
 }
 
 

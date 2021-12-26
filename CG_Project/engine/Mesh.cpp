@@ -13,105 +13,6 @@
 
 namespace VE
 {
-	ObjMesh::ObjMesh(std::vector<Vertex>& vertices, std::vector<u32>& indices, std::vector<std::string>& textures)
-		:
-		vertices(std::move(vertices)),
-		indices(std::move(indices)),
-		textures(std::move(textures))
-	{
-	}
-
-	std::string GetFolderPath(const char* filename)
-	{
-		std::string str(filename);
-		size_t found;
-		found = str.find_last_of("/\\");
-		return str.substr(0, found + 1);
-	}
-
-    std::vector<ObjMesh> loadObj(const char* filename)
-    {
-		LogInfo(std::string("Loading ") + filename);
-
-		assert(filename != nullptr);
-
-		Assimp::Importer imp;
-		const aiScene* model = imp.ReadFile(filename, aiProcess_Triangulate | 
-			aiProcess_JoinIdenticalVertices | aiProcess_OptimizeMeshes | aiProcess_OptimizeGraph);
-
-		if (model == nullptr)
-		{
-			std::string msg(filename);
-			msg += " Failed Loading";
-			LogInfo(msg);
-			return std::vector<ObjMesh>();
-		}
-
-		auto matirials = model->mMaterials;
-
-		std::vector<ObjMesh> mesh_vector;
-
-		for (u32 i = 0; i < model->mNumMeshes; i++)
-		{
-			const aiMesh* mesh = model->mMeshes[i];
-
-			std::vector<ObjMesh::Vertex> vertices;
-			std::vector<u32> indices;
-
-			for (u32 v = 0; v < mesh->mNumVertices; v++)
-			{
-				ObjMesh::Vertex vert;
-
-				vert.pos = glm::vec3(mesh->mVertices[v].x, mesh->mVertices[v].y, mesh->mVertices[v].z);
-
-				if (mesh->mTextureCoords[0] != nullptr)
-				{
-					vert.texCord = glm::vec2(mesh->mTextureCoords[0][v].x, mesh->mTextureCoords[0][v].y);
-				}
-				else
-				{
-					vert.texCord = glm::vec2(0.0f, 0.0f);
-				}
-
-				vert.normal = glm::vec3(mesh->mNormals[v].x, mesh->mNormals[v].y, mesh->mNormals[v].z);
-
-				vertices.push_back(vert);
-			}
-
-			for (uint32_t f = 0; f < mesh->mNumFaces; f++)
-			{
-				const aiFace& face = mesh->mFaces[f];
-				assert(face.mNumIndices == 3);
-
-				indices.push_back(face.mIndices[0]);
-				indices.push_back(face.mIndices[1]);
-				indices.push_back(face.mIndices[2]);
-			}
-
-			std::vector<std::string> textures;
-			uint32_t matirialIndex = mesh->mMaterialIndex;
-
-			if (matirialIndex >= 0)
-			{
-				auto& material = *matirials[matirialIndex];
-
-				aiString texFileName;
-				material.GetTexture(aiTextureType_DIFFUSE, 0, &texFileName);
-				textures.emplace_back(GetFolderPath(filename) + texFileName.C_Str());
-
-				material.GetTexture(aiTextureType_SPECULAR, 0, &texFileName);
-				textures.emplace_back(GetFolderPath(filename) + texFileName.C_Str());
-			}
-
-			mesh_vector.emplace_back(vertices, indices, textures);
-		}
-
-		std::string msg(filename);
-		msg += " Has been Loaded!!!";
-		LogInfo(msg);
-		return mesh_vector;
-    }
-
 	VE::Mesh::Mesh(VertexArray& va, VertexBuffer& vb, IndexBuffer& ib)
 		:
 		vertexArray(std::move(va)),
@@ -121,41 +22,20 @@ namespace VE
 
     }
 
-	Mesh::Mesh(VertexArray& va, VertexBuffer& vb, IndexBuffer& ib, std::vector<std::string>& textures)
-		:
-		vertexArray(std::move(va)),
-		vertexBuffer(std::move(vb)),
-		indexBuffer(std::move(ib))
-	{
-		for (auto& tex : textures)
-		{
-			this->textures.emplace_back(tex);
-		}
-	}
-
-	Mesh::Mesh(VertexArray& va, VertexBuffer& vb, IndexBuffer& ib, Texture tex)
-		:
-		vertexArray(std::move(va)),
-		vertexBuffer(std::move(vb)),
-		indexBuffer(std::move(ib))
-	{
-		textures.push_back(std::move(tex));
-	}
-
-	Mesh Mesh::GenarateQuard(const char* filename, u32 repet)
+	Mesh Mesh::GenarateQuard(u32 repet)
 	{
 		float vertexs[] = {
-			// pos                 // tex cord                      // normal
-			 0.5f,  0.5f, 0.0f,    (float)repet, (float)repet,     0.0f,  0.0f, 1.0f, //0
-			 0.5f, -0.5f, 0.0f,    (float)repet,         0.0f,     0.0f,  0.0f, 1.0f, //1
-			-0.5f, -0.5f, 0.0f,			   0.0f,         0.0f,     0.0f,  0.0f, 1.0f, //2
-			-0.5f,  0.5f, 0.0f,            0.0f, (float)repet,     0.0f,  0.0f, 1.0f, //3
+			// pos                 // tex cord                      // normal			// tan				// bi
+			 0.5f,  0.5f, 0.0f,    (float)repet, (float)repet,     0.0f,  0.0f, 1.0f,  -1.0f,  0.0f, 0.0f,	0.0f,  -1.0f, 0.0f,//0
+			 0.5f, -0.5f, 0.0f,    (float)repet,         0.0f,     0.0f,  0.0f, 1.0f,  -1.0f,  0.0f, 0.0f,	0.0f,  -1.0f, 0.0f,//1
+			- 0.5f, -0.5f, 0.0f,		   0.0f,         0.0f,     0.0f,  0.0f, 1.0f,  -1.0f,  0.0f, 0.0f,	0.0f,  -1.0f, 0.0f,//2
+			- 0.5f,  0.5f, 0.0f,           0.0f, (float)repet,     0.0f,  0.0f, 1.0f,  -1.0f,  0.0f, 0.0f,	0.0f,  -1.0f, 0.0f //3
 		};
 
 		VertexBuffer vertexBuffer(vertexs, sizeof(vertexs));
 
-		ElementType arr[3] = { FLOAT3, FLOAT2, FLOAT3_N };
-		Layout<3> layout(arr);
+		ElementType arr[5] = { FLOAT3, FLOAT2, FLOAT3_N, FLOAT3_N, FLOAT3_N };
+		Layout<5> layout(arr);
 
 		VertexArray vertexArray;
 		vertexArray.AddBuffer(vertexBuffer, layout);
@@ -166,17 +46,12 @@ namespace VE
 			3, 0, 2
 		};
 
-		IndexBuffer indexBuffer(indices, 36);
+		IndexBuffer indexBuffer(indices, 6);
 
-		if (filename == nullptr)
-		{
-			return { vertexArray, vertexBuffer, indexBuffer };
-		}
-
-		return { vertexArray, vertexBuffer, indexBuffer, Texture(filename) };
+		return { vertexArray, vertexBuffer, indexBuffer };
 	}
 
-    Mesh Mesh::GenarateCube(const char* filename)
+    Mesh Mesh::GenarateCube()
     {
 		float vertexs[] = {
 			// pos                 // tex cord      // normal
@@ -242,20 +117,15 @@ namespace VE
 		};
 		IndexBuffer indexBuffer(indices, 36);
 
-		if (filename == nullptr)
-		{
-			return { vertexArray, vertexBuffer, indexBuffer };
-		}
-
-		return { vertexArray, vertexBuffer, indexBuffer, Texture(filename) };
+		return { vertexArray, vertexBuffer, indexBuffer };
     }
 
-    Mesh Mesh::GenarateSphere(u32 prec, const char* filename)
+    Mesh Mesh::GenarateSphere(u32 prec)
     {
 		const uint32_t numVertices = (prec + 1) * (prec + 1);
 		const uint32_t numIndices = prec * prec * 6;
 
-		std::vector<ObjMesh::Vertex> vertices(numVertices);
+		std::vector<ObjLoader::Vertex> vertices(numVertices);
 
 		// calculate triangle vertices
 		for (u32 i = 0; i <= prec; i++) {
@@ -286,7 +156,7 @@ namespace VE
 
 		std::vector<float> vertex_buffer;
 
-		for (ObjMesh::Vertex& v : vertices)
+		for (ObjLoader::Vertex& v : vertices)
 		{
 			vertex_buffer.emplace_back(v.pos.x);
 			vertex_buffer.emplace_back(v.pos.y);
@@ -311,15 +181,10 @@ namespace VE
 
 		IndexBuffer indexBuffer(indices.data(), (u32)indices.size());
 
-		if (filename == nullptr)
-		{
-			return { vertexArray, vertexBuffer, indexBuffer };
-		}
-
-		return { vertexArray, vertexBuffer, indexBuffer, Texture(filename) };
+		return { vertexArray, vertexBuffer, indexBuffer };
     }
 
-	Mesh Mesh::Create(ObjMesh obj)
+	Mesh Mesh::Create(const ObjLoader::Mesh& obj)
 	{
 		std::vector<float> vertex_buffer;
 
@@ -335,19 +200,33 @@ namespace VE
 			vertex_buffer.emplace_back(v.normal.x);
 			vertex_buffer.emplace_back(v.normal.y);
 			vertex_buffer.emplace_back(v.normal.z);
+
+			vertex_buffer.emplace_back(v.tangent.x);
+			vertex_buffer.emplace_back(v.tangent.y);
+			vertex_buffer.emplace_back(v.tangent.z);
+
+			vertex_buffer.emplace_back(v.bitangent.x);
+			vertex_buffer.emplace_back(v.bitangent.y);
+			vertex_buffer.emplace_back(v.bitangent.z);
 		}
 
 		VertexBuffer vertexBuffer((const void*)vertex_buffer.data(), (u32)(vertex_buffer.size() * sizeof(float)));
 
-		ElementType arr[3] = { FLOAT3, FLOAT2, FLOAT3_N };
-		Layout<3> layout(arr);
+		ElementType arr[5] = { FLOAT3, FLOAT2, FLOAT3_N, FLOAT3_N, FLOAT3_N };
+		Layout<5> layout(arr);
 
 		VertexArray vertexArray;
 		vertexArray.AddBuffer(vertexBuffer, layout);
 
 		IndexBuffer indexBuffer(obj.indices.data(), (u32)obj.indices.size());
 
-		return { vertexArray, vertexBuffer, indexBuffer, obj.textures };
+		Mesh mesh{ vertexArray, vertexBuffer, indexBuffer };
+
+		mesh.BaseMap = obj.BaseMap;
+		mesh.MaskMap = obj.MaskMap;
+		mesh.NormalMap = obj.NormalMap;
+
+		return mesh;
 	}
 
 	Mesh Mesh::Skybox()
@@ -418,7 +297,9 @@ namespace VE
 
 	void Mesh::Draw(const glm::mat4& view, const glm::mat4& proj, const Shader& shader, bool use_mat)
 	{
-		this->Bind();
+		vertexArray.Bind();
+		indexBuffer.Bind();
+
 		shader.Bind();
 
 		shader.SetUniform("proj", proj);
@@ -426,12 +307,14 @@ namespace VE
 
 		if (use_mat)
 		{
-			shader.SetUniform("mat.ambient", 0.3f);
-			shader.SetUniform("mat.texture_diffuse", 0);
-			//shader.SetUniform("mat.texture_specular", 1);
-			//shader.SetUniform("mat.shininess", 200.0f);
-		}
+			TextureManager::GetTexture(BaseMap).Bind(0);
+			TextureManager::GetTexture(MaskMap).Bind(1);
+			TextureManager::GetTexture(NormalMap).Bind(2);
 
+			shader.SetUniform("BaseMap", 0);
+			shader.SetUniform("MaskMap", 1);
+			shader.SetUniform("NormalMap", 2);
+		}
 
 		glCall(glDrawElements(GL_TRIANGLES, indexBuffer.GetCount(), GL_UNSIGNED_INT, nullptr));
 	}
@@ -441,7 +324,7 @@ namespace VE
 		:
 		transform(1.0f)
 	{
-		std::vector<ObjMesh> obj = loadObj(filename);
+		std::vector<ObjLoader::Mesh> obj = ObjLoader::Load(filename);
 
 		for (u32 i = 0; i < obj.size(); i++)
 		{
@@ -463,6 +346,8 @@ namespace VE
 			m_mesh[i].Draw(view, proj, shader, use_mat);
 		}
 	}
+
+
 }
 
 

@@ -12,7 +12,6 @@ namespace VE
 
 	void PointLight::Draw(const glm::mat4& view, const glm::mat4& proj, const Shader& shader)
 	{
-		sphere.Bind();
 		shader.Bind();
 
 		glm::mat4 model = glm::translate(glm::mat4(1.0f), position);

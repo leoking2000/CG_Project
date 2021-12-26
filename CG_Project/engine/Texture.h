@@ -4,6 +4,7 @@
 #include "OpenGL.h"
 #include <vector>
 #include <string>
+#include <unordered_map>
 
 namespace VE
 {
@@ -20,21 +21,12 @@ namespace VE
 
 		~Texture();
 
-		inline u32 GetWidth() const { return m_width; }
-		inline u32 GetHeight() const { return m_height; }
-		inline const std::string& GetName() const { return m_name; }
-
-		void reload();
+		void reload(const std::string& file_name);
 
 		void Bind(u32 slot = 0) const;
 		void UnBind() const;
-
 	private:
-		u32 m_width;
-		u32 m_height;
 		u32 m_id;
-
-		std::string m_name;
 	};
 
 	class CubeMap
@@ -59,5 +51,21 @@ namespace VE
 		void UnBind() const;
 	private:
 		u32 m_id;
+	};
+
+	class TextureManager
+	{
+	public:
+		TextureManager(const TextureManager& other) = delete;
+		TextureManager& operator=(const TextureManager& other) = delete;
+	public:
+		static Texture& GetTexture(const std::string& name);
+		static void Clear();
+	private:
+		TextureManager() {};
+	private:
+		static TextureManager& get();
+	private:
+		std::unordered_map<std::string, Texture> m_textures;
 	};
 }

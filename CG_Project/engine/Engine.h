@@ -16,7 +16,7 @@ namespace VE
 	class Engine
 	{
 	public:
-		Engine(u32 window_width, u32 window_height, const char* window_title, bool resizable, std::vector<std::string>&& skybox);
+		Engine(u32 window_width, u32 window_height, const char* window_title, bool resizable);
 
 		Engine(const Engine&) = delete;
 		Engine& operator=(const Engine&) = delete;
@@ -48,18 +48,13 @@ namespace VE
 	private:
 		FrameBuffer core_frame_buffer;
 		glm::mat4 proj;
-		VE::Shader basic{ "Shader/basicTex.glsl" };
+		VE::Shader basic{ "Shader/shading.glsl" };
 		VE::Shader light_shader{ "Shader/light.glsl" };
 
 		// post process
 		Shader post_process{ "Shader/post_process.glsl" };
 		VertexBuffer vbo_post_process;
 		VertexArray vao_post_process;
-
-		// skybox
-		VE::Shader skybox_shader{ "Shader/skybox.glsl" };
-		VE::Mesh skybox_mesh{ VE::Mesh::Skybox() };
-		VE::CubeMap skybox_cubemap;
 
 		// Shadows
 		VE::Shader shadow_shader{ "Shader/shadow_map.glsl" };
