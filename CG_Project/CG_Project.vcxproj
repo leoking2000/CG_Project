@@ -149,9 +149,8 @@
     <ClCompile Include="engine\Engine.cpp" />
     <ClCompile Include="engine\FrameBuffer.cpp" />
     <ClCompile Include="engine\IndexBuffer.cpp" />
-    <ClCompile Include="engine\light\PointLight.cpp" />
     <ClCompile Include="engine\Mesh.cpp" />
-    <ClCompile Include="engine\mesh\ObjLoader.cpp" />
+    <ClCompile Include="utilities\ObjLoader.cpp" />
     <ClCompile Include="engine\OpenGL.cpp" />
     <ClCompile Include="engine\Shader.cpp" />
     <ClCompile Include="engine\Texture.cpp" />
@@ -174,9 +173,8 @@
     <ClInclude Include="engine\FrameBuffer.h" />
     <ClInclude Include="engine\IndexBuffer.h" />
     <ClInclude Include="engine\Layout.h" />
-    <ClInclude Include="engine\light\PointLight.h" />
     <ClInclude Include="engine\Mesh.h" />
-    <ClInclude Include="engine\mesh\ObjLoader.h" />
+    <ClInclude Include="utilities\ObjLoader.h" />
     <ClInclude Include="engine\OpenGL.h" />
     <ClInclude Include="engine\Shader.h" />
     <ClInclude Include="engine\Texture.h" />

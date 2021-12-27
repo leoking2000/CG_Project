@@ -16,7 +16,7 @@ uniform mat4 lightSpaceMatrix;
 
 out vec2 tex_cord;
 out vec3 world_pos; // camera space
-out vec4 world_pos_l; // light space
+out vec4 light_ndc; // light space
 out mat3 TBN;
 
 void main()
@@ -28,7 +28,7 @@ void main()
 
     world_pos   = (view_model * vec4(apos, 1.0) ).xyz;
 
-    world_pos_l = lightSpaceMatrix * model * vec4(apos, 1.0);
+    light_ndc = lightSpaceMatrix * model * vec4(apos, 1.0);
 
     gl_Position = proj * view_model * vec4(apos, 1.0);
 
@@ -45,8 +45,9 @@ void main()
 
 in vec2 tex_cord;
 in vec3 world_pos; // camera space
-in vec4 world_pos_l; // light space
 in mat3 TBN;
+
+in vec4 light_ndc;
 
 uniform vec4 lightDir; // camera space
 
@@ -68,23 +69,50 @@ vec3 GetNormal()
     return normal;
 }
 
-float ShadowCalculation()
+float shadow_pcf2x2_weighted(vec3 light_space_xyz)
 {
-    // perform perspective divide
-    vec3 projCoords = world_pos_l.xyz / world_pos_l.w;
-    // transform to [0,1] range
-    projCoords = projCoords * 0.5 + 0.5;
+	ivec2 shadow_map_size = textureSize(shadowMap, 0);
+	float xOffset = 1.0 / shadow_map_size.x;
+    float yOffset = 1.0 / shadow_map_size.y;
 
-    //if(projCoords.z > 1.0) return 0.0;
+	// compute the weights of the neighboring pixels
+	vec2 uv = light_space_xyz.xy - vec2(xOffset, yOffset);
+	float u_ratio = mod(uv.x, xOffset) / xOffset;
+	float v_ratio = mod(uv.y, yOffset) / yOffset;
+	float u_opposite = 1 - u_ratio;
+	float v_opposite = 1 - v_ratio;
 
-    // get closest depth value from light's perspective (using [0,1] range fragPosLight as coords)
-    float closestDepth = texture(shadowMap, projCoords.xy).r;
-    // get depth of current fragment from light's perspective
-    float currentDepth = projCoords.z;
-    // check whether current frag pos is in shadow
-    float shadow = (currentDepth - bias) < closestDepth  ? 1.0 : 0.0;
+	// compute the distance with a small bias
+	float z = light_space_xyz.z - bias;
 
-    return shadow;
+	// compute the shadow percentage
+	float bottomLeft  = (texture(shadowMap, uv).r > z)                         ? u_opposite : 0.0;
+	float bottomRight = (texture(shadowMap, uv + vec2(xOffset, 0)).r > z)      ? u_ratio : 0.0; 
+	float topLeft     = (texture(shadowMap, uv + vec2(0, yOffset), 0).r > z)   ? u_opposite : 0.0;
+	float topRight    =  texture(shadowMap, uv + vec2(xOffset, yOffset)).r > z ? u_ratio : 0.0;
+
+	float factor      = (bottomLeft + bottomRight) * v_opposite + (topLeft + topRight) * v_ratio;
+    return factor;
+}
+
+// 1 sample per pixel
+float shadow()
+{
+	// perspective division
+	vec3 ndc = light_ndc.xyz / light_ndc.w; // normalize device cordince
+	// transform to [0,1] range
+    ndc = ndc * 0.5 + 0.5;
+
+	// check that we are inside light clipping frustum
+	if (ndc.x < 0.0) return 0.0;
+	if (ndc.y < 0.0) return 0.0;
+	if (ndc.x > 1.0) return 0.0;
+	if (ndc.y > 1.0) return 0.0;
+    if (ndc.z < 0.0) return 0.0;
+    if (ndc.z > 1.0) return 0.0;
+
+	// sample shadow map
+	return shadow_pcf2x2_weighted(ndc);
 }
 
 vec3 blinn_phong()
@@ -104,11 +132,9 @@ vec3 blinn_phong()
     vec3 ambient = vec3(0.1) * albedo;
     vec3 diffuse = (albedo) * NdotL;
 
-    vec3 specular = vec3(mask.r) * pow(NdotH, shininess);
+    vec3 specular = vec3(mask.a) * pow(NdotH, shininess);
 
-    float Shadow = ShadowCalculation();
-
-    return (diffuse + specular) * Shadow + ambient;
+    return (diffuse + specular) * shadow() + ambient;
 }
 
 void main()

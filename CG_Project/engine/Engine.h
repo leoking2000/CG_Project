@@ -9,7 +9,6 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "FrameBuffer.h"
-#include "light/PointLight.h"
 
 namespace VE
 {
@@ -31,15 +30,16 @@ namespace VE
 		void EndFrame();
 	protected:
 		Window win;
-
+		std::vector<Model> models;
 		VE::Camera cam;
 
 		// light
-		VE::PointLight light{ { 0.0f, 500.0f, -100.0f } };
-		float bias = 0.0f;
+		glm::mat4 light_proj;
+		glm::mat4 light_view;
+		glm::vec3 light_dir;
 
-		std::vector<Model> models;
-
+		// sky
+		std::string sky_map;
 	private:
 		std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 		std::chrono::high_resolution_clock::time_point previousTime = std::chrono::high_resolution_clock::now();
@@ -49,7 +49,6 @@ namespace VE
 		FrameBuffer core_frame_buffer;
 		glm::mat4 proj;
 		VE::Shader basic{ "Shader/shading.glsl" };
-		VE::Shader light_shader{ "Shader/light.glsl" };
 
 		// post process
 		Shader post_process{ "Shader/post_process.glsl" };
@@ -60,6 +59,10 @@ namespace VE
 		VE::Shader shadow_shader{ "Shader/shadow_map.glsl" };
 		static constexpr u32 SHADOW_SIZE = 4096;
 		FrameBuffer shadow_map{ SHADOW_SIZE, SHADOW_SIZE, true };
+
+		//skybox
+		VE::Shader sky_shader{ "Shader/sky.glsl" };
+		VE::Mesh sky_sphere{ VE::Mesh::GenarateSphere() };
 
 	private:
 		void RenderShadowMap();

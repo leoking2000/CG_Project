@@ -75,14 +75,15 @@ namespace VE
 		glCall(glEnable(GL_DEPTH_TEST));
 		glCall(glClear(GL_DEPTH_BUFFER_BIT));
 
-		glm::mat4 l_proj = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 1000.0f);
-		glm::mat4 l_view = glm::lookAt(light.position, light.position + glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		light_proj = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 1000.0f);
+		light_view = glm::lookAt(glm::vec3(0.0f, 500.0f, -100.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		light_dir = -glm::normalize(glm::vec3(0.0f, 500.0f, -100.0f));
 
 		shadow_shader.Bind();
 
 		for (Model& obj : models)
 		{
-			obj.Draw(l_view, l_proj, shadow_shader, false);
+			obj.Draw(light_view, light_proj, shadow_shader, false);
 		}
 	}
 
@@ -91,7 +92,7 @@ namespace VE
 		core_frame_buffer.Bind();
 
 		glm::vec2 win_size = win.WindowSize();
-		proj = glm::perspective(glm::radians(45.0f), win_size.x / win_size.y, 0.1f, 1000.0f);
+		proj = glm::perspective(glm::radians(45.0f), win_size.x / win_size.y, 0.001f, 1000.0f);
 		glCall(glViewport(0, 0, (int)win_size.x, (int)win_size.y));
 
 		glCall(glEnable(GL_DEPTH_TEST));
@@ -105,9 +106,19 @@ namespace VE
 		glCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
 		glCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-		glm::mat4 l_proj = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 1000.0f);
-		glm::mat4 l_view = glm::lookAt(light.position, light.position + glm::vec3(0.0f, -1.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		glm::mat4 lightSpaceMatrix = l_proj * l_view;
+		glm::mat4 lightSpaceMatrix = light_proj * light_view;
+
+		// skybox
+		glCall(glDepthMask(GL_FALSE));
+		glCall(glDisable(GL_CULL_FACE));
+
+		sky_shader.Bind();
+		TextureManager::GetTexture(sky_map).Bind(0);
+		sky_shader.SetUniform("skybox", 0);
+
+		sky_sphere.Draw(glm::mat4(glm::mat3(cam.GetCameraView())), proj, sky_shader, false);
+
+		glCall(glDepthMask(GL_TRUE));
 
 		for (Model& obj : models)
 		{
@@ -115,15 +126,14 @@ namespace VE
 
 			shadow_map.BindDepthTexture(5);
 			basic.SetUniform("shadowMap", 5);
-			basic.SetUniform("bias", 0.000005f);
+			basic.SetUniform("bias", 0.0000005f);
 
 			basic.SetUniform("lightSpaceMatrix", lightSpaceMatrix);
-			basic.SetUniform("lightDir", cam.GetCameraView() * glm::vec4(0.0f, -1.0f, 0.0f, 0.0f));
+			basic.SetUniform("lightDir", cam.GetCameraView() * glm::vec4(light_dir, 0.0f));
 
 			obj.Draw(cam.GetCameraView(), proj, basic);
 		}
 
-		//light.Draw(cam.GetCameraView(), proj, light_shader);
 	}
 
 	void Engine::PostProccess()

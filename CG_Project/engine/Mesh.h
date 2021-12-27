@@ -7,7 +7,7 @@
 #include <vector>
 #include <Shader.h>
 
-#include "mesh/ObjLoader.h"
+#include "ObjLoader.h"
 
 namespace VE
 {
