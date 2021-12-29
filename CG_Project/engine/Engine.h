@@ -48,7 +48,8 @@ namespace VE
 	private:
 		FrameBuffer core_frame_buffer;
 		glm::mat4 proj;
-		VE::Shader basic{ "Shader/shading.glsl" };
+		VE::Shader basic{ "Shader/test.glsl" };
+		//VE::Shader basic{ "Shader/shading.glsl" };
 
 		// post process
 		Shader post_process{ "Shader/post_process.glsl" };

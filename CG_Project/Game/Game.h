@@ -15,6 +15,7 @@ public:
 		models[0].transform = model_craft;
 
 		models.emplace_back("assets/terrain.obj");
+		models[1].m_mesh[0].Lightmap = "assets/terrain_Lightmap.png";
 
 
 		cam.pos = glm::vec3(0.0f, 60.0f, 0.0f);

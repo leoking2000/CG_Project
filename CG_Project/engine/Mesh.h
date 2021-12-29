@@ -30,6 +30,7 @@ namespace VE
 		std::string BaseMap;
 		std::string MaskMap;
 		std::string NormalMap;
+		std::string Lightmap;
 	private:
 		Mesh(VertexArray& va, VertexBuffer& vb, IndexBuffer& ib);
 	};

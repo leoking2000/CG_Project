@@ -314,6 +314,18 @@ namespace VE
 			shader.SetUniform("BaseMap", 0);
 			shader.SetUniform("MaskMap", 1);
 			shader.SetUniform("NormalMap", 2);
+
+			if (Lightmap.empty())
+			{
+				shader.SetUniform("Has_Lightmap", 0);
+			}
+			else
+			{
+				shader.SetUniform("Has_Lightmap", 1);
+
+				TextureManager::GetTexture(Lightmap).Bind(3);
+				shader.SetUniform("Lightmap", 3);
+			}
 		}
 
 		glCall(glDrawElements(GL_TRIANGLES, indexBuffer.GetCount(), GL_UNSIGNED_INT, nullptr));

@@ -76,7 +76,7 @@ namespace VE
 		glCall(glClear(GL_DEPTH_BUFFER_BIT));
 
 		light_proj = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 1000.0f);
-		light_view = glm::lookAt(glm::vec3(0.0f, 500.0f, -100.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		light_view = glm::lookAt(glm::vec3(0.0f, 450.0f, -150.0f), glm::vec3(0.0f, 0.0f, -130.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 		light_dir = -glm::normalize(glm::vec3(0.0f, 500.0f, -100.0f));
 
 		shadow_shader.Bind();
@@ -119,6 +119,7 @@ namespace VE
 		sky_sphere.Draw(glm::mat4(glm::mat3(cam.GetCameraView())), proj, sky_shader, false);
 
 		glCall(glDepthMask(GL_TRUE));
+		glCall(glEnable(GL_CULL_FACE));
 
 		for (Model& obj : models)
 		{
