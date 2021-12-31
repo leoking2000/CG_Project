@@ -4,12 +4,12 @@
 
 void window_size_callback(GLFWwindow* window, int width, int height)
 {
-	VE::Window* win = reinterpret_cast<VE::Window*>(glfwGetWindowUserPointer(window));
+	GL::Window* win = reinterpret_cast<GL::Window*>(glfwGetWindowUserPointer(window));
 
 	win->ResizeWindow(width, height);
 }
 
-namespace VE
+namespace GL
 {
 	Window::Window(u32 window_width, u32 window_height, const char* window_title, bool resizable)
 	{

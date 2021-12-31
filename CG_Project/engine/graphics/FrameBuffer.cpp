@@ -3,9 +3,9 @@
 #include "log.h"
 
 
-namespace VE
+namespace GL
 {
-	VE::FrameBuffer::FrameBuffer(u32 width, u32 height, bool is_depthmap)
+	FrameBuffer::FrameBuffer(u32 width, u32 height, bool is_depthmap)
 		:
 		is_depthmap(is_depthmap)
 	{

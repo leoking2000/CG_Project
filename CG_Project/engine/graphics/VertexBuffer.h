@@ -2,8 +2,11 @@
 #include "defines.h"
 #include "OpenGL.h"
 
-namespace VE
+namespace GL
 {
+	/*
+	* Represents a VBO (vertex buffer object)
+	*/
 	class VertexBuffer
 	{
 	public:

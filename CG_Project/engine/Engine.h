@@ -1,16 +1,16 @@
 #pragma once
 #include <chrono>
-#include "OpenGL.h"
-#include "Window.h"
+#include "graphics/OpenGL.h"
+#include "graphics/Window.h"
 #include "../imgui/imgui.h"
 
 #include "log.h"
-#include "Camera.h"
-#include "Mesh.h"
-#include "Shader.h"
-#include "FrameBuffer.h"
+#include "graphics/Camera.h"
+#include "graphics/Mesh.h"
+#include "graphics/Shader.h"
+#include "graphics/FrameBuffer.h"
 
-namespace VE
+namespace GL
 {
 	class Engine
 	{
@@ -31,7 +31,7 @@ namespace VE
 	protected:
 		Window win;
 		std::vector<Model> models;
-		VE::Camera cam;
+		Camera cam;
 
 		// light
 		glm::mat4 light_proj;
@@ -47,7 +47,7 @@ namespace VE
 		f32 continous_time = 0;
 	private:
 		glm::mat4 proj;
-		VE::Shader basic{ "Shader/test.glsl" };
+		Shader basic{ "Shader/test.glsl" };
 		//VE::Shader basic{ "Shader/shading.glsl" };
 
 		// post process
@@ -56,13 +56,13 @@ namespace VE
 		VertexArray vao_post_process;
 
 		// Shadows
-		VE::Shader shadow_shader{ "Shader/shadow_map.glsl" };
+		Shader shadow_shader{ "Shader/shadow_map.glsl" };
 		static constexpr u32 SHADOW_SIZE = 4096;
 		FrameBuffer shadow_map{ SHADOW_SIZE, SHADOW_SIZE, true };
 
 		//skybox
-		VE::Shader sky_shader{ "Shader/sky.glsl" };
-		VE::Mesh sky_sphere{ VE::Mesh::GenarateSphere() };
+		Shader sky_shader{ "Shader/sky.glsl" };
+		Mesh sky_sphere{ Mesh::GenarateSphere() };
 
 	private:
 		void RenderShadowMap();

@@ -1,29 +1,43 @@
 #pragma once
 #include "defines.h"
 
-namespace VE
+namespace GL
 {
+	/*
+	* Vertex attribute type 
+	* _N is for normalize
+	*/
 	enum ElementType
 	{
+		// a float number
 		FLOAT1 = 0,
 		FLOAT1_N = 1,
 
+		// 2d float vector
 		FLOAT2 = 2,
 		FLOAT2_N = 3,
 
+		// 3d float vector
 		FLOAT3 = 4,
 		FLOAT3_N = 5,
 
+		// 4d float vector
 		FLOAT4 = 6,
 		FLOAT4_N = 7,
 
+		// 3d unsigned char vector
 		UCHAR3 = 8,
 		UCHAR3_N = 9,
 
+		// 4d unsigned char vector
 		UCHAR4 = 10,
 		UCHAR4_N = 11
 	};
 
+
+	/*
+	* Represents the attribute layout of a VBO
+	*/
 	template<u32 ELEMENTS_COUNT>
 	class Layout
 	{
@@ -71,7 +85,7 @@ namespace VE
 			}
 		}
 
-		ElementType operator[](int i) const
+		inline ElementType operator[](int i) const
 		{
 			return m_arr[i];
 		}

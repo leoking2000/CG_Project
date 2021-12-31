@@ -7,7 +7,7 @@
 #include <string>
 #include <sstream>
 
-namespace VE
+namespace GL
 {
 	Shader::Shader(std::string filename)
 		:
@@ -213,7 +213,7 @@ u32 CreateShaderProgramVF(const char* vertexS, const char* fragS)
 	return programid;
 }
 
-u32 VE::Shader::CreateShaderProgram(const char* filename)
+u32 GL::Shader::CreateShaderProgram(const char* filename)
 {
 	assert(filename != nullptr);
 

@@ -2,7 +2,7 @@
 #include "VE_Math.h"
 #include "Window.h"
 
-namespace VE
+namespace GL
 {
 	class Camera
 	{
@@ -10,6 +10,7 @@ namespace VE
 		glm::vec3 pos;
 		glm::vec3 dir;
 
+		glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f);
 	private:
 		float yaw = -PI / 2.0f;
 		float pitch = 0.0f;

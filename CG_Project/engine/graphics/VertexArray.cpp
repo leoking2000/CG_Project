@@ -1,7 +1,7 @@
 #include "VertexArray.h"
 #include "log.h"
 
-namespace VE
+namespace GL
 {
 	VertexArray::VertexArray()
 	{

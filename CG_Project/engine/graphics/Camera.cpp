@@ -1,6 +1,6 @@
 #include "Camera.h"
 
-namespace VE
+namespace GL
 {
 	Camera::Camera()
 		:
@@ -20,7 +20,7 @@ namespace VE
 
 	glm::mat4 Camera::GetCameraView()
 	{
-		return glm::lookAt(pos, pos + dir, glm::vec3(0.0f, 1.0f, 0.0f));
+		return glm::lookAt(pos, pos + dir, up);
 	}
 
 	void Camera::Update(Window& win, float dt)

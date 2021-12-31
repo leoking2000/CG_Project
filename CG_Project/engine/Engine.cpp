@@ -4,7 +4,7 @@
 #include "../imgui/imgui_impl_glfw.h"
 #include "../imgui/imgui_impl_opengl3.h"
 
-namespace VE
+namespace GL
 {
 	Engine::Engine(u32 window_width, u32 window_height, const char* window_title, bool resizable)
 		:

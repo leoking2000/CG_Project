@@ -5,16 +5,8 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-namespace VE
+namespace GL
 {
-	//std::string GetFolderPath(const char* filename)
-	//{
-		//std::string str(filename);
-		//size_t found;
-		//found = str.find_last_of("/\\");
-		//return str.substr(0, found + 1);
-	//}
-
 	std::vector<ObjLoader::Mesh> ObjLoader::Load(const char* filename)
 	{
 		LogInfo(std::string("Loading ") + filename);
@@ -79,7 +71,6 @@ namespace VE
 			std::string in_BaseMap;
 			std::string in_MaskMap;
 			std::string in_NormalMap;
-			//std::string in_Lightmap;
 
 			uint32_t matirialIndex = mesh->mMaterialIndex;
 

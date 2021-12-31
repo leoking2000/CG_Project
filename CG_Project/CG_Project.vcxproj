@@ -145,18 +145,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="engine\Camera.cpp" />
+    <ClCompile Include="engine\graphics\Camera.cpp" />
     <ClCompile Include="engine\Engine.cpp" />
-    <ClCompile Include="engine\FrameBuffer.cpp" />
-    <ClCompile Include="engine\IndexBuffer.cpp" />
-    <ClCompile Include="engine\Mesh.cpp" />
+    <ClCompile Include="engine\graphics\FrameBuffer.cpp" />
+    <ClCompile Include="engine\graphics\IndexBuffer.cpp" />
+    <ClCompile Include="engine\graphics\Mesh.cpp" />
+    <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="utilities\ObjLoader.cpp" />
-    <ClCompile Include="engine\OpenGL.cpp" />
-    <ClCompile Include="engine\Shader.cpp" />
-    <ClCompile Include="engine\Texture.cpp" />
-    <ClCompile Include="engine\VertexArray.cpp" />
-    <ClCompile Include="engine\VertexBuffer.cpp" />
-    <ClCompile Include="engine\Window.cpp" />
+    <ClCompile Include="engine\graphics\OpenGL.cpp" />
+    <ClCompile Include="engine\graphics\Shader.cpp" />
+    <ClCompile Include="engine\graphics\Texture.cpp" />
+    <ClCompile Include="engine\graphics\VertexArray.cpp" />
+    <ClCompile Include="engine\graphics\VertexBuffer.cpp" />
+    <ClCompile Include="engine\graphics\Window.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
     <ClCompile Include="imgui\imgui_draw.cpp" />
@@ -168,19 +169,19 @@
     <ClCompile Include="utilities\log.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="engine\Camera.h" />
+    <ClInclude Include="engine\graphics\Camera.h" />
     <ClInclude Include="engine\Engine.h" />
-    <ClInclude Include="engine\FrameBuffer.h" />
-    <ClInclude Include="engine\IndexBuffer.h" />
-    <ClInclude Include="engine\Layout.h" />
-    <ClInclude Include="engine\Mesh.h" />
+    <ClInclude Include="engine\graphics\FrameBuffer.h" />
+    <ClInclude Include="engine\graphics\IndexBuffer.h" />
+    <ClInclude Include="engine\graphics\Layout.h" />
+    <ClInclude Include="engine\graphics\Mesh.h" />
     <ClInclude Include="utilities\ObjLoader.h" />
-    <ClInclude Include="engine\OpenGL.h" />
-    <ClInclude Include="engine\Shader.h" />
-    <ClInclude Include="engine\Texture.h" />
-    <ClInclude Include="engine\VertexArray.h" />
-    <ClInclude Include="engine\VertexBuffer.h" />
-    <ClInclude Include="engine\Window.h" />
+    <ClInclude Include="engine\graphics\OpenGL.h" />
+    <ClInclude Include="engine\graphics\Shader.h" />
+    <ClInclude Include="engine\graphics\Texture.h" />
+    <ClInclude Include="engine\graphics\VertexArray.h" />
+    <ClInclude Include="engine\graphics\VertexBuffer.h" />
+    <ClInclude Include="engine\graphics\Window.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_glfw.h" />

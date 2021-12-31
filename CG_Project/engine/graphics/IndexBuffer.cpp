@@ -1,6 +1,6 @@
 #include "IndexBuffer.h"
 
-namespace VE
+namespace GL
 {
 	IndexBuffer::IndexBuffer(const u32* data, u32 count, u32 usage)
 		:

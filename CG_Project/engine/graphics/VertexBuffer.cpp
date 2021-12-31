@@ -1,6 +1,6 @@
 #include "VertexBuffer.h"
 
-namespace VE
+namespace GL
 {
 	VertexBuffer::VertexBuffer(const void* data, u32 size, u32 usage)
 	{

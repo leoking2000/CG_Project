@@ -5,11 +5,11 @@
 #include "Texture.h"
 #include <string>
 #include <vector>
-#include <Shader.h>
+#include "Shader.h"
 
 #include "ObjLoader.h"
 
-namespace VE
+namespace GL
 {
 	class Mesh
 	{

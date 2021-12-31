@@ -3,8 +3,12 @@
 #include <vector>
 #include <string>
 
-namespace VE
+namespace GL
 {
+	/*
+	* loades a model from a file into CPU mem
+	* a model is an array of meshs
+	*/
 	class ObjLoader
 	{
 	public:
@@ -21,7 +25,8 @@ namespace VE
 				return pos == rhs.pos &&
 					texCord == rhs.texCord &&
 					normal == rhs.normal &&
-					tangent == rhs.tangent;
+					tangent == rhs.tangent &&
+					bitangent == rhs.bitangent;
 			}
 		};
 	public:
@@ -34,9 +39,10 @@ namespace VE
 			std::string BaseMap;
 			std::string MaskMap;
 			std::string NormalMap;
-			//std::string Lightmap;
 		};
 	public:
 		static std::vector<Mesh> Load(const char* filename);
+	private:
+		ObjLoader();
 	};
 }

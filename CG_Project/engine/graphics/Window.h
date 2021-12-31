@@ -3,7 +3,7 @@
 #include "FrameBuffer.h"
 #include <GLFW/glfw3.h>
 
-namespace VE
+namespace GL
 {
 	class Window
 	{

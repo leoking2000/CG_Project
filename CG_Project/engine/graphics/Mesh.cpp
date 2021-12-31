@@ -11,9 +11,9 @@
 #include <assimp/postprocess.h>
 
 
-namespace VE
+namespace GL
 {
-	VE::Mesh::Mesh(VertexArray& va, VertexBuffer& vb, IndexBuffer& ib)
+	Mesh::Mesh(VertexArray& va, VertexBuffer& vb, IndexBuffer& ib)
 		:
 		vertexArray(std::move(va)),
 		vertexBuffer(std::move(vb)),
@@ -331,6 +331,7 @@ namespace VE
 		glCall(glDrawElements(GL_TRIANGLES, indexBuffer.GetCount(), GL_UNSIGNED_INT, nullptr));
 	}
 
+	//////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Model::Model(const char* filename)
 		:

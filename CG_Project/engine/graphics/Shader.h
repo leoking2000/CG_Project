@@ -5,8 +5,11 @@
 #include <string>
 #include <unordered_map>
 
-namespace VE
+namespace GL
 {
+	/*
+	* Represents a Shader program
+	*/
 	class Shader
 	{
 	public:
@@ -36,7 +39,7 @@ namespace VE
 		i32 GetLocation(const std::string& name) const;
 	private:
 		std::string m_name;
-		uint32_t m_id;
+		u32 m_id;
 		mutable std::unordered_map<std::string, i32> m_uniforms;
 	};
 

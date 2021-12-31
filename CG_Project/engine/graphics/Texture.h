@@ -6,8 +6,11 @@
 #include <string>
 #include <unordered_map>
 
-namespace VE
+namespace GL
 {
+	/*
+	* Represents an image in GPU mem
+	*/
 	class Texture
 	{
 	public:
@@ -29,37 +32,16 @@ namespace VE
 		u32 m_id;
 	};
 
-	class CubeMap
-	{
-	public:
-		CubeMap();
-		CubeMap(const std::vector<std::string>& filenames);
-
-		CubeMap(const CubeMap& other) = delete;
-		CubeMap& operator=(const CubeMap& other) = delete;
-
-		void reload(const std::vector<std::string>& filenames);
-
-		CubeMap(CubeMap&& other);
-		CubeMap& operator=(CubeMap&& other);
-
-		inline bool isInitialized() { return m_id != 0; }
-
-		~CubeMap();
-	public:
-		void Bind(u32 slot = 0) const;
-		void UnBind() const;
-	private:
-		u32 m_id;
-	};
-
+	/*
+	* Stores all the Textures, 
+	*/
 	class TextureManager
 	{
 	public:
 		TextureManager(const TextureManager& other) = delete;
 		TextureManager& operator=(const TextureManager& other) = delete;
 	public:
-		static Texture& GetTexture(const std::string& name);
+		static Texture& GetTexture(const std::string& file_name);
 		static void Clear();
 	private:
 		TextureManager() {};

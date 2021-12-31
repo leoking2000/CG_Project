@@ -1,7 +1,7 @@
 #pragma once
 #include "defines.h"
 
-namespace VE
+namespace GL
 {
 	class FrameBuffer
 	{

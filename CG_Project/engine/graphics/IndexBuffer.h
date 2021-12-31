@@ -2,7 +2,7 @@
 #include "OpenGL.h"
 #include "defines.h"
 
-namespace VE
+namespace GL
 {
 	class IndexBuffer
 	{

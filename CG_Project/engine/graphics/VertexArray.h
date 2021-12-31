@@ -2,8 +2,11 @@
 #include "VertexBuffer.h"
 #include "Layout.h"
 
-namespace VE
+namespace GL
 {
+	/*
+	* Represents a VAO
+	*/
 	class VertexArray
 	{
 	public:
