@@ -46,7 +46,6 @@ namespace VE
 		std::chrono::nanoseconds elapsed;
 		f32 continous_time = 0;
 	private:
-		FrameBuffer core_frame_buffer;
 		glm::mat4 proj;
 		VE::Shader basic{ "Shader/test.glsl" };
 		//VE::Shader basic{ "Shader/shading.glsl" };

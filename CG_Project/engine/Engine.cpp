@@ -9,7 +9,6 @@ namespace VE
 	Engine::Engine(u32 window_width, u32 window_height, const char* window_title, bool resizable)
 		:
 		win(window_width, window_height, window_title, resizable),
-		core_frame_buffer(window_width, window_height),
 		vbo_post_process(nullptr, 0)
 	{
 		// Initialize ImGui
@@ -89,7 +88,7 @@ namespace VE
 
 	void Engine::RenderGeometry()
 	{
-		core_frame_buffer.Bind();
+		win.fb->Bind();
 
 		glm::vec2 win_size = win.WindowSize();
 		proj = glm::perspective(glm::radians(45.0f), win_size.x / win_size.y, 0.001f, 1000.0f);
@@ -146,7 +145,7 @@ namespace VE
 		post_process.Bind();
 		vao_post_process.Bind();
 
-		core_frame_buffer.BindColorTexture(0);
+		win.fb->BindColorTexture(0);
 		//shadow_map.BindDepthTexture(0);
 		post_process.SetUniform("uniform_texture", 0);
 

@@ -4,7 +4,9 @@
 
 void window_size_callback(GLFWwindow* window, int width, int height)
 {
-	glCall(glViewport(0, 0, width, height));
+	VE::Window* win = reinterpret_cast<VE::Window*>(glfwGetWindowUserPointer(window));
+
+	win->ResizeWindow(width, height);
 }
 
 namespace VE
@@ -40,6 +42,8 @@ namespace VE
 		glfwSetWindowSizeCallback(glfw_window, window_size_callback);
 		glfwMakeContextCurrent(glfw_window);
 
+		glfwSetWindowUserPointer(glfw_window, this);
+
 		// Initialize OpenGL
 		if (!InitOpenGL())
 		{
@@ -55,10 +59,14 @@ namespace VE
 		glfwSwapInterval(1);
 
 		glCall(glViewport(0, 0, window_width, window_height));
+
+		fb = new FrameBuffer(window_width, window_height);
 	}
 
 	Window::~Window()
 	{
+		delete fb;
+
 		glfwDestroyWindow(glfw_window);
 		glfwTerminate();
 
@@ -89,7 +97,9 @@ namespace VE
 	{
 		glfwSetWindowSize(glfw_window, (int)width, (int)height);
 
-		window_size_callback(glfw_window, (int)width, (int)height);
+		glCall(glViewport(0, 0, width, height));
+
+		fb->Resize(width, height);
 	}
 
 	glm::vec2 Window::WindowSize()

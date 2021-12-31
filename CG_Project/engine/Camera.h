@@ -10,6 +10,7 @@ namespace VE
 		glm::vec3 pos;
 		glm::vec3 dir;
 
+	private:
 		float yaw = -PI / 2.0f;
 		float pitch = 0.0f;
 

@@ -185,18 +185,15 @@ vec3 cook_torrance(vec3 frag_to_light, vec3 normal, vec3 frag_to_view)
     kD *= 1.0 - metallic;
 
     float NdotL = max(dot(normal, frag_to_light), 0.0);
-    vec3 color;
+    vec3 color = (kD * albedo / PI + specular) * radiance * NdotL;
+
+    vec3 ambient = vec3(0.2) * albedo * ao;
 
     if(Has_Lightmap)
     {
-        color = (kD * albedo / PI + texture(Lightmap, tex_cord).rgb + specular) * radiance * NdotL;
-    }
-    else
-    {
-        color = (kD * albedo / PI + specular) * radiance * NdotL;
+        ambient = vec3(0.2) * texture(Lightmap, tex_cord).rgb;
     }
 
-    vec3 ambient = vec3(0.3) * albedo * ao;
 
     return ambient + color * shadow();
 }

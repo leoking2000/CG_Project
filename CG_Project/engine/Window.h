@@ -1,5 +1,6 @@
 #pragma once
 #include "VE_Math.h"
+#include "FrameBuffer.h"
 #include <GLFW/glfw3.h>
 
 namespace VE
@@ -34,5 +35,6 @@ namespace VE
 
 	public:
 		GLFWwindow* glfw_window = nullptr;
+		FrameBuffer* fb;
 	};
 }
