@@ -169,6 +169,7 @@
     <ClCompile Include="utilities\log.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="engine\GameObject.h" />
     <ClInclude Include="engine\graphics\Camera.h" />
     <ClInclude Include="engine\Engine.h" />
     <ClInclude Include="engine\graphics\FrameBuffer.h" />

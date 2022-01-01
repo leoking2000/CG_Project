@@ -6,20 +6,27 @@ GL::Engine(1600, 900, "Computer Graphics Project", true)
 {
 	sky_map = "assets/CanopusGround.png";
 
-	models.emplace_back("assets/craft.obj");
+	// cashing
+	GL::ModelManager::GetModel("assets/terrain.obj").m_mesh[0].Lightmap = "assets/terrain_Lightmap.png";
+	GL::ModelManager::GetModel("assets/craft.obj");
+	GL::ModelManager::GetModel("assets/hoewa_Forsteriana_1.obj");
+
+	// make the craft
 	glm::mat4 model_craft = glm::translate(glm::mat4(1.0f), craft_pos);
 	model_craft = glm::scale(model_craft, glm::vec3(1.0f, 1.0f, 1.0f));
-	models[0].transform = model_craft;
+	objets.emplace_back("assets/craft.obj", model_craft);
 
-	models.emplace_back("assets/terrain.obj");
-	models[1].m_mesh[0].Lightmap = "assets/terrain_Lightmap.png";
+	// make a game object for the terrain
+	objets.emplace_back("assets/terrain.obj", glm::mat4(1.0f));
 
-	models.emplace_back("assets/hoewa_Forsteriana_1.obj");
+	// make some plants
 	glm::mat4 model_plant = glm::translate(glm::mat4(1.0f), glm::vec3(-130.0f, 0.0f, 80.0f));
-	//model_plant = glm::rotate(model_plant, PI / 2.0f, glm::vec3(0.0f, 0.0f, 1.0f));
-	//model_plant = glm::scale(model_plant, glm::vec3(0.2f, 0.2f, 0.2f));
-	models[2].transform = model_plant;
+	model_plant = glm::scale(model_plant, glm::vec3(0.2f, 0.2f, 0.2f));
+	objets.emplace_back("assets/hoewa_Forsteriana_1.obj", model_plant);
 
+	model_plant = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -10.0f));
+	model_plant = glm::scale(model_plant, glm::vec3(0.5f, 0.5f, 0.5f));
+	objets.emplace_back("assets/hoewa_Forsteriana_1.obj", model_plant);
 
 	cam.pos = glm::vec3(0.0f, 60.0f, 0.0f);
 }

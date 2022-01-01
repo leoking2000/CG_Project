@@ -344,8 +344,6 @@ namespace GL
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 
 	Model::Model(const char* filename)
-		:
-		transform(1.0f)
 	{
 		std::vector<ObjLoader::Mesh> obj = ObjLoader::Load(filename);
 
@@ -362,14 +360,39 @@ namespace GL
 
 	void Model::Draw(const glm::mat4& view, const glm::mat4& proj, const Shader& shader, bool use_mat)
 	{
-		shader.SetUniform("model", transform);
-
 		for (u32 i = 0; i < m_mesh.size(); i++)
 		{
 			m_mesh[i].Draw(view, proj, shader, use_mat);
 		}
 	}
 
+	/////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+	Model& ModelManager::GetModel(const std::string& file_name)
+	{
+		ModelManager& manager = ModelManager::get();
+
+		if (manager.m_models.find(file_name) != manager.m_models.end())
+		{
+			return manager.m_models.at(file_name);
+		}
+
+		manager.m_models.insert({ file_name, Model(file_name.c_str()) });
+
+		return manager.m_models.at(file_name);
+	}
+
+	void ModelManager::Clear()
+	{
+		ModelManager::get().m_models.clear();
+	}
+
+	ModelManager& ModelManager::get()
+	{
+		static ModelManager manager;
+
+		return manager;
+	}
 
 }
 

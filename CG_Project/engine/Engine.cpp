@@ -29,7 +29,10 @@ namespace GL
 
 	Engine::~Engine()
 	{
+		ModelManager::Clear();
 		TextureManager::Clear();
+
+
 		ImGui_ImplOpenGL3_Shutdown();
 		ImGui_ImplGlfw_Shutdown();
 
@@ -65,7 +68,6 @@ namespace GL
 		glfwSwapBuffers(win.glfw_window);
 	}
 
-
 	void Engine::RenderShadowMap()
 	{
 		shadow_map.Bind();
@@ -80,9 +82,16 @@ namespace GL
 
 		shadow_shader.Bind();
 
-		for (Model& obj : models)
+		for (GameObject& obj : objets)
 		{
-			obj.Draw(light_view, light_proj, shadow_shader, false);
+			if (obj.model_name.empty())
+			{
+				continue;
+			}
+
+			shadow_shader.SetUniform("model", obj.transform);
+
+			ModelManager::GetModel(obj.model_name).Draw(light_view, light_proj, shadow_shader, false);
 		}
 	}
 
@@ -120,8 +129,13 @@ namespace GL
 		glCall(glDepthMask(GL_TRUE));
 		glCall(glEnable(GL_CULL_FACE));
 
-		for (Model& obj : models)
+		for (GameObject& obj : objets)
 		{
+			if (obj.model_name.empty())
+			{
+				continue;
+			}
+
 			basic.Bind();
 
 			shadow_map.BindDepthTexture(5);
@@ -131,7 +145,9 @@ namespace GL
 			basic.SetUniform("lightSpaceMatrix", lightSpaceMatrix);
 			basic.SetUniform("lightDir", cam.GetCameraView() * glm::vec4(light_dir, 0.0f));
 
-			obj.Draw(cam.GetCameraView(), proj, basic);
+			basic.SetUniform("model", obj.transform);
+
+			ModelManager::GetModel(obj.model_name).Draw(cam.GetCameraView(), proj, basic);
 		}
 
 	}

@@ -10,6 +10,8 @@
 #include "graphics/Shader.h"
 #include "graphics/FrameBuffer.h"
 
+#include "GameObject.h"
+
 namespace GL
 {
 	class Engine
@@ -30,7 +32,7 @@ namespace GL
 		void EndFrame();
 	protected:
 		Window win;
-		std::vector<Model> models;
+		std::vector<GameObject> objets;
 		Camera cam;
 
 		// light
@@ -63,7 +65,6 @@ namespace GL
 		//skybox
 		Shader sky_shader{ "Shader/sky.glsl" };
 		Mesh sky_sphere{ Mesh::GenarateSphere() };
-
 	private:
 		void RenderShadowMap();
 		void RenderGeometry();
