@@ -1,6 +1,7 @@
 #include "Texture.h"
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
+#include "log.h"
 
 namespace GL
 {
@@ -44,6 +45,8 @@ namespace GL
 		int bpp;
 
 		stbi_uc* data = stbi_load(file_name.c_str(), &width, &height, &bpp, 4);
+
+		LogInfo(file_name + " is Loaded!");
 
 		assert(data != nullptr);
 

@@ -52,8 +52,10 @@ uniform sampler2D shadowMap;
 uniform float bias;
 
 uniform sampler2D BaseMap;
-uniform sampler2D MaskMap;
 uniform sampler2D NormalMap;
+
+uniform sampler2D MaskMap;
+uniform int Has_MaskMap;
 
 uniform sampler2D Lightmap;
 uniform int Has_Lightmap;
@@ -157,12 +159,22 @@ float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness)
 
 vec3 cook_torrance(vec3 frag_to_light, vec3 normal, vec3 frag_to_view)
 {
-    vec4 mask = texture(MaskMap, tex_cord);
+    vec4 mask;
+    
+    if(Has_MaskMap)
+    {
+        mask = texture(MaskMap, tex_cord);
+    }
+    else
+    {
+        mask = vec4(0.0, 0.0, 1.0, 1.0);
+    }
 
     vec3 albedo = texture(BaseMap, tex_cord).rgb;
     float metallic = mask.r;
     float roughness = 1 - mask.a;
     float ao = mask.g;
+
 
     vec3 halfVector = normalize( frag_to_light + frag_to_view );
 

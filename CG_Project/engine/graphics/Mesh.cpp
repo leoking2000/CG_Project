@@ -308,12 +308,22 @@ namespace GL
 		if (use_mat)
 		{
 			TextureManager::GetTexture(BaseMap).Bind(0);
-			TextureManager::GetTexture(MaskMap).Bind(1);
-			TextureManager::GetTexture(NormalMap).Bind(2);
-
 			shader.SetUniform("BaseMap", 0);
-			shader.SetUniform("MaskMap", 1);
-			shader.SetUniform("NormalMap", 2);
+
+			TextureManager::GetTexture(NormalMap).Bind(1);
+			shader.SetUniform("NormalMap", 1);
+
+			if (MaskMap.empty())
+			{
+				shader.SetUniform("Has_MaskMap", 0);
+			}
+			else
+			{
+				shader.SetUniform("Has_MaskMap", 1);
+
+				TextureManager::GetTexture(MaskMap).Bind(2);
+				shader.SetUniform("MaskMap", 2);
+			}
 
 			if (Lightmap.empty())
 			{
