@@ -12,9 +12,7 @@ GL::Engine(1600, 900, "Computer Graphics Project", true)
 	GL::ModelManager::GetModel("assets/hoewa_Forsteriana_1.obj");
 
 	// make the craft
-	glm::mat4 model_craft = glm::translate(glm::mat4(1.0f), craft_pos);
-	model_craft = glm::scale(model_craft, glm::vec3(1.0f, 1.0f, 1.0f));
-	objets.emplace_back("assets/craft.obj", model_craft);
+	objets.emplace_back("assets/craft.obj", glm::inverse(glm::lookAt(craft_pos, craft_pos + craft_facing, craft_up)));
 
 	// make a game object for the terrain
 	objets.emplace_back("assets/terrain.obj", glm::mat4(1.0f));
@@ -42,7 +40,7 @@ void Game::Start()
 		ImGui::Text("FPS: %f\n", std::round(1 / (ElapsedTime() / 1000.0f)));
 		ImGui::End();
 
-		cam.Update(win, ElapsedTime() / 100.0f);
+		Update();
 
 		EndFrame();
 
@@ -53,7 +51,50 @@ void Game::Start()
 	}
 }
 
+void Game::Update()
+{
+	if (win.MouseButtonIsPress(GLFW_MOUSE_BUTTON_1))
+	{
+		MoveCraft();
+	}
+
+	//cam.Update(win, ElapsedTime() / 100.0f);
+
+	cam.pos = objets[0].transform * rel_cam_pos;
+	cam.dir = craft_facing;
+}
+
+void Game::MoveCraft()
+{
+	f32 dt = ElapsedTime() / 1000.0f;
+
+	glm::vec2 input = Input();
+
+	craft_facing = glm::normalize(craft_facing + input.x * craft_right * dt + input.y * craft_up * dt);
+	craft_right = glm::normalize(glm::cross(craft_facing, glm::vec3(0.0f, 1.0f, 0.0f)));
+	craft_up = glm::cross(craft_right, craft_facing);
+
+	craft_pos = craft_pos + speed * craft_facing * dt;
+
+	objets[0].transform = glm::inverse(glm::lookAt(craft_pos, craft_pos + craft_facing, craft_up));
+}
+
+glm::vec2 Game::Input()
+{
+	constexpr f32 a = 1.0f;
+
+	glm::vec2 mouse = win.MousePos();
+	glm::vec2 size = win.WindowSize();
+
+	f32 x = -a + (2 * a / size.x) * mouse.x;
+	f32 y = -a + (2 * a / size.y) * mouse.y;
+
+	return glm::vec2(x, -y);
+}
+
 Game::~Game()
 {
 	LogInfo("Destroyed Game");
 }
+
+
