@@ -16,7 +16,7 @@ private:
 	glm::vec3 craft_right{ 1.0f, 0.0f, 0.0f };
 	glm::vec3 craft_up{ 0.0f, 1.0f, 0.0f };
 
-	f32 speed = 100.0f;
+	f32 speed = 80.0f;
 
 
 	glm::vec4 rel_cam_pos{ 0.0f, 10.0f, 30.0f, 1.0f };

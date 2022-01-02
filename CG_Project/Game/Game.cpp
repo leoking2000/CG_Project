@@ -37,7 +37,7 @@ void Game::Start()
 
 		ImGui::Begin("FPS");
 		ImGui::Text("ElapsedTime: %f ms", ElapsedTime());
-		ImGui::Text("FPS: %f\n", std::round(1 / (ElapsedTime() / 1000.0f)));
+		ImGui::Text("FPS: %f\n", glm::round(1 / (ElapsedTime() / 1000.0f)));
 		ImGui::End();
 
 		Update();
@@ -53,13 +53,9 @@ void Game::Start()
 
 void Game::Update()
 {
-	if (win.MouseButtonIsPress(GLFW_MOUSE_BUTTON_1))
-	{
-		MoveCraft();
-	}
-
 	//cam.Update(win, ElapsedTime() / 100.0f);
 
+	MoveCraft();
 	cam.pos = objets[0].transform * rel_cam_pos;
 	cam.dir = craft_facing;
 }
@@ -68,11 +64,14 @@ void Game::MoveCraft()
 {
 	f32 dt = ElapsedTime() / 1000.0f;
 
-	glm::vec2 input = Input();
+	if (win.MouseButtonIsPress(GLFW_MOUSE_BUTTON_1))
+	{
+		glm::vec2 input = Input();
 
-	craft_facing = glm::normalize(craft_facing + input.x * craft_right * dt + input.y * craft_up * dt);
-	craft_right = glm::normalize(glm::cross(craft_facing, glm::vec3(0.0f, 1.0f, 0.0f)));
-	craft_up = glm::cross(craft_right, craft_facing);
+		craft_facing = glm::normalize(craft_facing + input.x * craft_right * dt + input.y * craft_up * dt);
+		craft_right = glm::normalize(glm::cross(craft_facing, glm::vec3(0.0f, 1.0f, 0.0f)));
+		craft_up = glm::cross(craft_right, craft_facing);
+	}
 
 	craft_pos = craft_pos + speed * craft_facing * dt;
 
@@ -81,7 +80,7 @@ void Game::MoveCraft()
 
 glm::vec2 Game::Input()
 {
-	constexpr f32 a = 1.0f;
+	constexpr f32 a = 2.0f;
 
 	glm::vec2 mouse = win.MousePos();
 	glm::vec2 size = win.WindowSize();

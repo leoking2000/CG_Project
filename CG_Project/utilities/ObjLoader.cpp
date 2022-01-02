@@ -103,7 +103,7 @@ namespace GL
 
 
 		std::string msg(filename);
-		msg += " Has been Loaded!!!";
+		msg += " Has been Loaded!!! (sub_meshs: " + std::to_string(mesh_vector.size()) + ")";
 		LogInfo(msg);
 		return mesh_vector;
 	}

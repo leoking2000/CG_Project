@@ -9,7 +9,8 @@ namespace GL
 	Engine::Engine(u32 window_width, u32 window_height, const char* window_title, bool resizable)
 		:
 		win(window_width, window_height, window_title, resizable),
-		vbo_post_process(nullptr, 0)
+		vbo_post_process(nullptr, 0),
+		lightSpaceMatrix(light_proj * light_view)
 	{
 		// Initialize ImGui
 		IMGUI_CHECKVERSION();
@@ -76,10 +77,6 @@ namespace GL
 		glCall(glEnable(GL_DEPTH_TEST));
 		glCall(glClear(GL_DEPTH_BUFFER_BIT));
 
-		light_proj = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 1000.0f);
-		light_view = glm::lookAt(glm::vec3(0.0f, 450.0f, -150.0f), glm::vec3(0.0f, 0.0f, -130.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-		light_dir = -glm::normalize(glm::vec3(0.0f, 500.0f, -100.0f));
-
 		shadow_shader.Bind();
 
 		for (GameObject& obj : objets)
@@ -100,7 +97,10 @@ namespace GL
 		win.fb->Bind();
 
 		glm::vec2 win_size = win.WindowSize();
-		proj = glm::perspective(glm::radians(45.0f), win_size.x / win_size.y, 0.001f, 1000.0f);
+
+		glm::mat4 proj = glm::perspective(glm::radians(45.0f), win_size.x / win_size.y, 0.001f, 1000.0f);
+		glm::mat4 cam_view = cam.GetCameraView();
+
 		glCall(glViewport(0, 0, (int)win_size.x, (int)win_size.y));
 
 		glCall(glEnable(GL_DEPTH_TEST));
@@ -114,8 +114,6 @@ namespace GL
 		glCall(glClearColor(0.0f, 0.0f, 0.0f, 1.0f));
 		glCall(glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT));
 
-		glm::mat4 lightSpaceMatrix = light_proj * light_view;
-
 		// skybox
 		glCall(glDepthMask(GL_FALSE));
 		glCall(glDisable(GL_CULL_FACE));
@@ -124,7 +122,7 @@ namespace GL
 		TextureManager::GetTexture(sky_map).Bind(0);
 		sky_shader.SetUniform("skybox", 0);
 
-		sky_sphere.Draw(glm::mat4(glm::mat3(cam.GetCameraView())), proj, sky_shader, false);
+		sky_sphere.Draw(glm::mat4(glm::mat3(cam_view)), proj, sky_shader, false);
 
 		glCall(glDepthMask(GL_TRUE));
 		glCall(glEnable(GL_CULL_FACE));
@@ -143,11 +141,11 @@ namespace GL
 			basic.SetUniform("bias", 0.0000005f);
 
 			basic.SetUniform("lightSpaceMatrix", lightSpaceMatrix);
-			basic.SetUniform("lightDir", cam.GetCameraView() * glm::vec4(light_dir, 0.0f));
+			basic.SetUniform("lightDir", cam_view * glm::vec4(light_dir, 0.0f));
 
 			basic.SetUniform("model", obj.transform);
 
-			ModelManager::GetModel(obj.model_name).Draw(cam.GetCameraView(), proj, basic);
+			ModelManager::GetModel(obj.model_name).Draw(cam_view, proj, basic);
 		}
 
 	}
