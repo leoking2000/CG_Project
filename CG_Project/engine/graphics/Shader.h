@@ -1,8 +1,6 @@
 #pragma once
-#include "defines.h"
-#include "OpenGL.h"
-#include "VE_Math.h"
-#include <string>
+#include "utilities/GL_Math.h"
+#include "utilities/log.h"
 #include <unordered_map>
 
 namespace GL
@@ -13,7 +11,7 @@ namespace GL
 	class Shader
 	{
 	public:
-		Shader(std::string name);
+		Shader(std::string filename);
 
 		Shader(const Shader& other) = delete;
 		Shader& operator=(const Shader& other) = delete;

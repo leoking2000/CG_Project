@@ -1,7 +1,8 @@
 #include "Texture.h"
+#include "OpenGL.h"
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-#include "log.h"
 
 namespace GL
 {
@@ -36,8 +37,6 @@ namespace GL
 
 	void Texture::reload(const std::string& file_name)
 	{
-		glCall(glDeleteTextures(1, &m_id));
-
 		stbi_set_flip_vertically_on_load(1);
 
 		int width;
@@ -45,30 +44,29 @@ namespace GL
 		int bpp;
 
 		stbi_uc* data = stbi_load(file_name.c_str(), &width, &height, &bpp, 4);
-
-		LogInfo(file_name + " is Loaded!");
-
+		LogInfo(file_name + " is Loading....");
 		assert(data != nullptr);
+
+		glCall(glDeleteTextures(1, &m_id));
 
 		glCall(glGenTextures(1, &m_id));
 		glCall(glBindTexture(GL_TEXTURE_2D, m_id));
-		//glCall(glGenerateMipmap(GL_TEXTURE_2D));
-
-		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
-		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-
-		//GLint max_anisotropy = 1;
-		//glCall(glGetIntegerv(GL_MAX_TEXTURE_MAX_ANISOTROPY_EXT, &max_anisotropy));
-		//glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_ANISOTROPY, max_anisotropy));
-
 
 		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
 		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
 
-		glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
-		glCall(glBindTexture(GL_TEXTURE_2D, 0));
+		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+		glCall(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
 
+		//glCall(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
+		//glCall(glGenerateMipmap(GL_TEXTURE_2D));
+
+		glCall(glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data));
+
+		glCall(glBindTexture(GL_TEXTURE_2D, 0));
 		stbi_image_free(data);
+
+		LogInfo(file_name + " is Loaded!!!");
 	}
 
 	void Texture::Bind(u32 slot) const
@@ -96,6 +94,16 @@ namespace GL
 		manager.m_textures.insert({ file_name, Texture(file_name) });
 
 		return manager.m_textures.at(file_name);
+	}
+
+	void TextureManager::BindTexture(const std::string& file_name, u32 slot)
+	{
+		TextureManager::GetTexture(file_name).Bind(slot);
+	}
+
+	void TextureManager::UnBindTexture(const std::string& file_name)
+	{
+		TextureManager::GetTexture(file_name).UnBind();
 	}
 
 	void TextureManager::Clear()

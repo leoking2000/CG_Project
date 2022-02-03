@@ -1,5 +1,5 @@
 #pragma once
-#include "defines.h"
+#include "utilities/defines.h"
 
 namespace GL
 {

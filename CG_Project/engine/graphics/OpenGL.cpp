@@ -1,48 +1,61 @@
 #pragma once
 #include "OpenGL.h"
-#include <string>
-#include "Log.h"
+#include "utilities/log.h"
 
-bool InitOpenGL()
+namespace GL
 {
-	// Initialize GLEW
-	if (glewInit() != GLEW_OK)
+	bool InitOpenGL()
 	{
-		LogError("GLEW could not Initialize.");
-		return false;
-	}
+		static bool first_call = true;
 
-	return true;
-}
-
-void glClearError()
-{
-	while (glGetError());
-}
-
-bool glCheckError()
-{
-	bool haserror = false;
-	while (GLenum error = glGetError())
-	{
-		switch (error)
+		if (!first_call)
 		{
-		case GL_INVALID_ENUM:
-			LogError(std::to_string(error) + " <Invalid Enum>");
-			break;
-		case GL_INVALID_VALUE:
-			LogError(std::to_string(error) + " <Invalid Value>");
-			break;
-		case GL_INVALID_OPERATION:
-			LogError(std::to_string(error) + " <Invalid Operation>");
-			break;
-		default:
-			LogError(std::to_string(error));
-			break;
+			LogError("InitOpenGL was called more than one time!!!");
+			return true;
 		}
 
-		haserror = true;
+		first_call = false;
+
+		// Initialize GLEW
+		if (glewInit() != GLEW_OK)
+		{
+			LogError("GLEW could not Initialize.");
+			return false;
+		}
+
+		return true;
 	}
 
-	return haserror;
+	void glClearError()
+	{
+		while (glGetError());
+	}
+
+	bool glCheckError()
+	{
+		bool haserror = false;
+		while (GLenum error = glGetError())
+		{
+			switch (error)
+			{
+			case GL_INVALID_ENUM:
+				LogError(std::to_string(error) + " <Invalid Enum>");
+				break;
+			case GL_INVALID_VALUE:
+				LogError(std::to_string(error) + " <Invalid Value>");
+				break;
+			case GL_INVALID_OPERATION:
+				LogError(std::to_string(error) + " <Invalid Operation>");
+				break;
+			default:
+				LogError(std::to_string(error));
+				break;
+			}
+
+			haserror = true;
+		}
+
+		return haserror;
+	}
 }
+

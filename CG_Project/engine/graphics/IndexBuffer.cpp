@@ -1,14 +1,17 @@
 #include "IndexBuffer.h"
+#include "OpenGL.h"
 
 namespace GL
 {
-	IndexBuffer::IndexBuffer(const u32* data, u32 count, u32 usage)
+	IndexBuffer::IndexBuffer(const u32* data, u32 count)
 		:
 		m_count(count)
 	{
 		glCall(glGenBuffers(1, &m_id));
 		glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id));
-		glCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(u32), (const void*)data, usage));
+		glCall(glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(u32), (const void*)data, GL_STATIC_DRAW));
+
+		glCall(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0));
 	}
 
 	IndexBuffer::IndexBuffer(IndexBuffer&& other)

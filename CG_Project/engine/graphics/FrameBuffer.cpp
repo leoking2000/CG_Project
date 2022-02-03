@@ -1,6 +1,6 @@
 #include "FrameBuffer.h"
 #include "OpenGL.h"
-#include "log.h"
+#include "utilities/log.h"
 
 
 namespace GL
@@ -67,6 +67,8 @@ namespace GL
 
 		GLenum status = CheckFramebufferStatus(m_id);
 		assert(status == GL_FRAMEBUFFER_COMPLETE);
+
+		glCall(glBindFramebuffer(GL_FRAMEBUFFER, 0));
 	}
 
 	void FrameBuffer::Bind() const
@@ -105,7 +107,7 @@ u32 CheckFramebufferStatus(u32 framebuffer_object)
 	u32 status;
 	if ((status = glCheckFramebufferStatus(GL_FRAMEBUFFER)) != GL_FRAMEBUFFER_COMPLETE)
 	{
-		LogError(std::string("glCheckFramebufferStatus: error ") + std::to_string(status));
+		GL::LogError(std::string("glCheckFramebufferStatus: error ") + std::to_string(status));
 		switch (status)
 		{
 		case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:

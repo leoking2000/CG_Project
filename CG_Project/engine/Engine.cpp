@@ -1,5 +1,5 @@
 #include "Engine.h"
-#include "log.h"
+#include "utilities/log.h"
 
 #include "../imgui/imgui_impl_glfw.h"
 #include "../imgui/imgui_impl_opengl3.h"
@@ -9,7 +9,6 @@ namespace GL
 	Engine::Engine(u32 window_width, u32 window_height, const char* window_title, bool resizable)
 		:
 		win(window_width, window_height, window_title, resizable),
-		vbo_post_process(nullptr, 0),
 		lightSpaceMatrix(light_proj * light_view)
 	{
 		// Initialize ImGui
@@ -22,7 +21,7 @@ namespace GL
 
 		// Initialize post proccess
 		GLfloat fbo_vertices[] = { -1, -1, 1, -1, -1, 1, 1, 1, };
-		vbo_post_process = VertexBuffer(fbo_vertices, sizeof(fbo_vertices));
+		VertexBuffer vbo_post_process = VertexBuffer(fbo_vertices, sizeof(fbo_vertices));
 		ElementType arr[1] = { FLOAT2 };
 		Layout<1> layout(arr);
 		vao_post_process.AddBuffer(vbo_post_process, layout);
@@ -147,7 +146,6 @@ namespace GL
 
 			ModelManager::GetModel(obj.model_name).Draw(cam_view, proj, basic);
 		}
-
 	}
 
 	void Engine::PostProccess()
@@ -160,9 +158,7 @@ namespace GL
 		vao_post_process.Bind();
 
 		win.fb->BindColorTexture(0);
-		//shadow_map.BindDepthTexture(0);
 		post_process.SetUniform("uniform_texture", 0);
-
 		//post_process.SetUniform("uniform_time", continous_time);
 
 		glCall(glDrawArrays(GL_TRIANGLE_STRIP, 0, 4));

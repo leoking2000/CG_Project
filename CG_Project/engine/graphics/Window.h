@@ -1,5 +1,5 @@
 #pragma once
-#include "VE_Math.h"
+#include "utilities/GL_Math.h"
 #include "FrameBuffer.h"
 #include <GLFW/glfw3.h>
 

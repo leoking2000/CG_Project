@@ -1,6 +1,5 @@
 #include "Shader.h"
 #include "OpenGL.h"
-#include "Log.h"
 
 #include <malloc.h>
 #include <fstream>
@@ -14,7 +13,6 @@ namespace GL
 		m_name(std::move(filename))
 	{
 		m_id = CreateShaderProgram(m_name.c_str());
-		glCall(glUseProgram(m_id));
 	}
 
 	Shader::Shader(Shader&& other)
@@ -49,7 +47,6 @@ namespace GL
 		glCall(glDeleteProgram(m_id));
 
 		m_id = CreateShaderProgram(m_name.c_str());
-		glCall(glUseProgram(m_id));
 	}
 
 	void Shader::Bind() const
@@ -179,12 +176,12 @@ u32 CompileShader(const char* source, u32 type)
 	glCall(glGetShaderiv(id, GL_COMPILE_STATUS, &resoult));
 	if (resoult == GL_FALSE)
 	{
-		LogError(type == GL_VERTEX_SHADER ? "<VERTEX SHADER COMPILE ERROR>" : "<FRAGMENT SHADER COMPILE ERROR>");
+		GL::LogError(type == GL_VERTEX_SHADER ? "<VERTEX SHADER COMPILE ERROR>" : "<FRAGMENT SHADER COMPILE ERROR>");
 		int len;
 		glCall(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &len));
 		char* msg = (char*)alloca(len * sizeof(char));
 		glCall(glGetShaderInfoLog(id, len, &len, msg));
-		LogError(msg);
+		GL::LogError(msg);
 		glCall(glDeleteShader(id));
 		return 0;
 	}

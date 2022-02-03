@@ -1,6 +1,5 @@
 #pragma once
-#include "defines.h"
-#include "OpenGL.h"
+#include "utilities/defines.h"
 
 namespace GL
 {
@@ -10,7 +9,7 @@ namespace GL
 	class VertexBuffer
 	{
 	public:
-		VertexBuffer(const void* data, u32 size, u32 usage = GL_STATIC_DRAW);
+		VertexBuffer(const void* data, u32 size);
 
 		VertexBuffer(const VertexBuffer& other) = delete;
 		VertexBuffer& operator=(const VertexBuffer&) = delete;

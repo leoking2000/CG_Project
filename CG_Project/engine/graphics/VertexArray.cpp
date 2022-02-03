@@ -1,12 +1,12 @@
 #include "VertexArray.h"
-#include "log.h"
+#include "utilities/log.h"
+#include "OpenGL.h"
 
 namespace GL
 {
 	VertexArray::VertexArray()
 	{
 		glCall(glGenVertexArrays(1, &m_id));
-		glCall(glBindVertexArray(m_id));
 	}
 
 	VertexArray::VertexArray(VertexArray&& other)
@@ -14,6 +14,7 @@ namespace GL
 		m_id(other.m_id)
 	{
 		other.m_id = 0;
+		m_buffers = std::move(other.m_buffers);
 	}
 
 	VertexArray& VertexArray::operator=(VertexArray&& other)
@@ -22,6 +23,9 @@ namespace GL
 
 		m_id = other.m_id;
 		other.m_id = 0;
+
+		m_buffers = std::move(other.m_buffers);
+
 		return *this;
 	}
 
@@ -87,8 +91,7 @@ namespace GL
 			count = 4;
 			break;
 		default:
-			LogError("VertexArray::AddBuffer error unknowed ElementType!!!");
-			assert(false);
+			assert(false && "VertexArray::AddBuffer error unknowed ElementType!!!");
 			break;
 		}
 

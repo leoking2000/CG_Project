@@ -51,8 +51,12 @@ uniform vec4 lightDir; // camera space
 uniform sampler2D shadowMap;
 uniform float bias;
 
+uniform vec3 BaseColor;
 uniform sampler2D BaseMap;
+uniform int Has_BaseMap;
+
 uniform sampler2D NormalMap;
+uniform int Has_NormalMap;
 
 uniform sampler2D MaskMap;
 uniform int Has_MaskMap;
@@ -64,6 +68,11 @@ out vec4 out_color;
 
 vec3 GetNormal()
 {
+    if(Has_NormalMap == 0)
+    {
+        return TBN[2];
+    }
+
     vec3 nmap = texture(NormalMap, tex_cord).rgb;
     nmap = nmap * 2.0 - 1.0;
     vec3 normal = normalize(TBN * nmap);
@@ -159,18 +168,17 @@ float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness)
 
 vec3 cook_torrance(vec3 frag_to_light, vec3 normal, vec3 frag_to_view)
 {
-    vec4 mask;
-    
+    vec3 albedo = BaseColor;
+    if(Has_BaseMap)
+    {
+        albedo = texture(BaseMap, tex_cord).rgb;
+    }
+
+    vec4 mask = vec4(0.0, 0.0, 1.0, 1.0);
     if(Has_MaskMap)
     {
         mask = texture(MaskMap, tex_cord);
     }
-    else
-    {
-        mask = vec4(0.0, 0.0, 1.0, 1.0);
-    }
-
-    vec3 albedo = texture(BaseMap, tex_cord).rgb;
     float metallic = mask.r;
     float roughness = 1 - mask.a;
     float ao = mask.g;

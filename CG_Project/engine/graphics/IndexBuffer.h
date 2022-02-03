@@ -1,13 +1,12 @@
 #pragma once
-#include "OpenGL.h"
-#include "defines.h"
+#include "utilities/defines.h"
 
 namespace GL
 {
 	class IndexBuffer
 	{
 	public:
-		IndexBuffer(const u32* data, u32 count, u32 usage = GL_STATIC_DRAW);
+		IndexBuffer(const u32* data, u32 count);
 
 		IndexBuffer(const IndexBuffer& other) = delete;
 		IndexBuffer& operator=(const IndexBuffer& other) = delete;

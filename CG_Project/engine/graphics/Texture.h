@@ -1,9 +1,6 @@
 #pragma once
-#include "defines.h"
-#include "VE_Math.h"
-#include "OpenGL.h"
-#include <vector>
-#include <string>
+#include "utilities/defines.h"
+#include "utilities/log.h"
 #include <unordered_map>
 
 namespace GL
@@ -42,6 +39,8 @@ namespace GL
 		TextureManager& operator=(const TextureManager& other) = delete;
 	public:
 		static Texture& GetTexture(const std::string& file_name);
+		static void BindTexture(const std::string& file_name, u32 slot = 0);
+		static void UnBindTexture(const std::string& file_name);
 		static void Clear();
 	private:
 		TextureManager() {};

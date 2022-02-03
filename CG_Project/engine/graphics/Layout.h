@@ -1,5 +1,6 @@
 #pragma once
-#include "defines.h"
+#include "utilities/defines.h"
+#include <assert.h>
 
 namespace GL
 {
@@ -79,7 +80,7 @@ namespace GL
 					m_stride += 4 * sizeof(char);
 					break;
 				default:
-					assert(false);
+					assert(false && "Unknown Element Type");
 					break;
 				}
 			}

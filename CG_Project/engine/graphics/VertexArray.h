@@ -1,6 +1,7 @@
 #pragma once
 #include "VertexBuffer.h"
 #include "Layout.h"
+#include <vector>
 
 namespace GL
 {
@@ -24,7 +25,7 @@ namespace GL
 		void UnBind() const;
 
 		template<u32 ELEMENTS_COUNT>
-		void AddBuffer(const VertexBuffer& vb, const Layout<ELEMENTS_COUNT>& layout)
+		void AddBuffer(VertexBuffer& vb, const Layout<ELEMENTS_COUNT>& layout)
 		{
 			Bind();
 			vb.Bind();
@@ -35,12 +36,14 @@ namespace GL
 			{
 				AddAttrib(i, layout[i], layout.GetStride(), offset);
 			}
+
+			m_buffers.emplace_back(std::move(vb));
 		}
 
 	private:
 		void AddAttrib(u32 i, ElementType element_type, u32 stride, u32& offset);
-
 	private:
 		u32 m_id;
+		std::vector<VertexBuffer> m_buffers;
 	};
 }

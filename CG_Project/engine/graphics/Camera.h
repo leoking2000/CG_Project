@@ -1,5 +1,5 @@
 #pragma once
-#include "VE_Math.h"
+#include "utilities/GL_Math.h"
 #include "Window.h"
 
 namespace GL

@@ -1,12 +1,12 @@
 #pragma once
-#include "VE_Math.h"
+#include "GL_Math.h"
+#include "log.h"
 #include <vector>
-#include <string>
 
 namespace GL
 {
 	/*
-	* loades a model from a file into CPU mem
+	* is a static class that loades a model from a file into CPU memory
 	* a model is an array of meshs
 	*/
 	class ObjLoader
@@ -39,6 +39,15 @@ namespace GL
 			std::string BaseMap;
 			std::string MaskMap;
 			std::string NormalMap;
+		public:
+			/// <summary>
+			/// returns true if a ray is intersecting with at least one triangle in the mesh.
+			/// </summary>
+			/// <param name="pos">The rays origine</param>
+			/// <param name="dir">The rays direction</param>
+			/// <param name="distance">Sets the variable to the closest intersection distance</param>
+			//bool intersectRay_Local(const glm::vec3 pos, const glm::vec3 dir,
+				//f32& distance);
 		};
 	public:
 		static std::vector<Mesh> Load(const char* filename);

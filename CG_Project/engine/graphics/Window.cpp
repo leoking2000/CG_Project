@@ -1,6 +1,6 @@
 #include "OpenGL.h"
 #include "Window.h"
-#include "log.h"
+#include "utilities/log.h"
 
 void window_size_callback(GLFWwindow* window, int width, int height)
 {
@@ -14,7 +14,7 @@ namespace GL
 	Window::Window(u32 window_width, u32 window_height, const char* window_title, bool resizable)
 	{
 		// Set GLFW error callback
-		glfwSetErrorCallback(LogGLFW_Error);
+		glfwSetErrorCallback(GL::LogGLFW_Error);
 
 		// Initialize GLFW
 		if (!glfwInit())
@@ -65,7 +65,7 @@ namespace GL
 
 	Window::~Window()
 	{
-		delete fb;
+		delete fb; // this needs to be deleted before we destory the window
 
 		glfwDestroyWindow(glfw_window);
 		glfwTerminate();

@@ -1,5 +1,4 @@
 #include "ObjLoader.h"
-#include "log.h"
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -45,15 +44,18 @@ namespace GL
 				if (mesh->mTextureCoords[0] != nullptr)
 				{
 					vert.texCord = glm::vec2(mesh->mTextureCoords[0][v].x, mesh->mTextureCoords[0][v].y);
+
+					vert.normal = glm::vec3(mesh->mNormals[v].x, mesh->mNormals[v].y, mesh->mNormals[v].z);
+					vert.tangent = glm::vec3(mesh->mTangents[v].x, mesh->mTangents[v].y, mesh->mTangents[v].z);
+					vert.bitangent = glm::vec3(mesh->mBitangents[v].x, mesh->mBitangents[v].y, mesh->mBitangents[v].z);
 				}
 				else
 				{
-					vert.texCord = glm::vec2(0.0f, 0.0f);
+					vert.texCord = glm::vec2(0.0f);
+					vert.normal = glm::vec3(0.0f);
+					vert.tangent = glm::vec3(0.0f);
+					vert.bitangent = glm::vec3(0.0f);
 				}
-
-				vert.normal = glm::vec3(mesh->mNormals[v].x, mesh->mNormals[v].y, mesh->mNormals[v].z);
-				vert.tangent = glm::vec3(mesh->mTangents[v].x, mesh->mTangents[v].y, mesh->mTangents[v].z);
-				vert.bitangent = glm::vec3(mesh->mBitangents[v].x, mesh->mBitangents[v].y, mesh->mBitangents[v].z);
 
 				in_vertices.push_back(vert);
 			}
@@ -107,6 +109,47 @@ namespace GL
 		LogInfo(msg);
 		return mesh_vector;
 	}
+
+	/*
+	bool ObjLoader::Mesh::intersectRay_Local(const glm::vec3 pos, const glm::vec3 dir, f32& distance)
+	{
+		const glm::vec3 normDir = glm::normalize(dir);
+
+		distance = std::numeric_limits<float>::max();
+		f32 curMin = distance;
+
+		bool iters_found = false;
+		glm::vec3 iters_point;
+
+		for (u32 index = 0; index < indices.size(); index += 3)
+		{
+			u32 i = indices[index];
+
+			Vertex& a = vertices[i];
+			Vertex& b = vertices[i + 1];
+			Vertex& c = vertices[i + 2];
+
+			glm::vec3 barycoord;
+
+			if (glm::intersectRayTriangle(pos, normDir, a.pos, b.pos, c.pos, barycoord))
+			{
+				const glm::vec3 tmp_isect = a.pos * barycoord.x + b.pos * barycoord.y + c.pos * barycoord.z;
+				float dist = glm::distance(pos, tmp_isect);
+
+				if (dist < curMin)
+				{
+					curMin = dist;
+					distance = dist;
+					iters_found = true;
+					iters_point = tmp_isect;
+				}
+			}
+		}
+
+		return iters_found;
+	}
+	*/
+
 }
 
 

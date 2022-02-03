@@ -4,11 +4,12 @@
 #include "graphics/Window.h"
 #include "../imgui/imgui.h"
 
-#include "log.h"
+#include "utilities/log.h"
 #include "graphics/Camera.h"
-#include "graphics/Mesh.h"
+#include "graphics/Model.h"
 #include "graphics/Shader.h"
 #include "graphics/FrameBuffer.h"
+#include "graphics/Texture.h"
 
 #include "GameObject.h"
 
@@ -51,12 +52,10 @@ namespace GL
 		std::chrono::nanoseconds elapsed;
 		f32 continous_time = 0;
 	private:
-		Shader basic{ "Shader/test.glsl" };
-		//VE::Shader basic{ "Shader/shading.glsl" };
+		Shader basic{ "Shader/rendering.glsl" };
 
 		// post process
 		Shader post_process{ "Shader/post_process.glsl" };
-		VertexBuffer vbo_post_process;
 		VertexArray vao_post_process;
 
 		// Shadows
@@ -66,7 +65,7 @@ namespace GL
 
 		//skybox
 		Shader sky_shader{ "Shader/sky.glsl" };
-		Mesh sky_sphere{ Mesh::GenarateSphere() };
+		Mesh sky_sphere{ GenarateSphere() };
 	private:
 		void RenderShadowMap();
 		void RenderGeometry();

@@ -20,5 +20,7 @@ private:
 
 
 	glm::vec4 rel_cam_pos{ 0.0f, 10.0f, 30.0f, 1.0f };
+
+	//GL::ObjLoader::Mesh collision_hull;
 };
 

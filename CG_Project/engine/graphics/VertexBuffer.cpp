@@ -1,12 +1,17 @@
 #include "VertexBuffer.h"
+#include "OpenGL.h"
+
+#include "utilities/log.h"
 
 namespace GL
 {
-	VertexBuffer::VertexBuffer(const void* data, u32 size, u32 usage)
+	VertexBuffer::VertexBuffer(const void* data, u32 size)
 	{
 		glCall(glGenBuffers(1, &m_id));
 		glCall(glBindBuffer(GL_ARRAY_BUFFER, m_id));
-		glCall(glBufferData(GL_ARRAY_BUFFER, size, data, usage));
+		glCall(glBufferData(GL_ARRAY_BUFFER, size, data, GL_STATIC_DRAW));
+
+		glCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 	}
 
 	VertexBuffer::VertexBuffer(VertexBuffer&& other)
