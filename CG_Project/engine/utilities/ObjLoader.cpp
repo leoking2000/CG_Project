@@ -110,45 +110,44 @@ namespace GL
 		return mesh_vector;
 	}
 
-	/*
-	bool ObjLoader::Mesh::intersectRay_Local(const glm::vec3 pos, const glm::vec3 dir, f32& distance)
+	bool ObjLoader::Mesh::intersectRay_Local(const glm::vec3 origin, const glm::vec3 dir, f32& distance)
 	{
-		const glm::vec3 normDir = glm::normalize(dir);
+		// store the current minimum distance found.
+		distance = std::numeric_limits<f32>::max(); 
 
-		distance = std::numeric_limits<float>::max();
-		f32 curMin = distance;
+		bool found_isect = false;
 
-		bool iters_found = false;
-		glm::vec3 iters_point;
-
-		for (u32 index = 0; index < indices.size(); index += 3)
+		for (u32 i = 0; i < indices.size(); i += 3)
 		{
-			u32 i = indices[index];
-
-			Vertex& a = vertices[i];
-			Vertex& b = vertices[i + 1];
-			Vertex& c = vertices[i + 2];
+			// read the triangle
+			u32 indice_a = indices[i];
+			u32 indice_b = indices[i + 1];
+			u32 indice_c = indices[i + 2];
+			glm::vec3 a = vertices[indice_a].pos;
+			glm::vec3 b = vertices[indice_b].pos;
+			glm::vec3 c = vertices[indice_c].pos;
 
 			glm::vec3 barycoord;
 
-			if (glm::intersectRayTriangle(pos, normDir, a.pos, b.pos, c.pos, barycoord))
+			// check for intersection for that triangle
+			if (glm::intersectRayTriangle(origin, dir, a, b, c, barycoord))
 			{
-				const glm::vec3 tmp_isect = a.pos * barycoord.x + b.pos * barycoord.y + c.pos * barycoord.z;
-				float dist = glm::distance(pos, tmp_isect);
+				// find the position of the intersection
+				const glm::vec3 temp_isect = a * barycoord.x + b * barycoord.y + c * barycoord.z;
 
-				if (dist < curMin)
+				// find the distance between the origin on the intersection
+				f32 temp_distance = glm::distance(origin, temp_isect);
+
+				if (temp_distance < distance)
 				{
-					curMin = dist;
-					distance = dist;
-					iters_found = true;
-					iters_point = tmp_isect;
+					distance = temp_distance;
+					found_isect = true;
 				}
 			}
 		}
 
-		return iters_found;
+		return found_isect;
 	}
-	*/
 
 }
 

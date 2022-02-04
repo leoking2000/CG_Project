@@ -7,6 +7,7 @@ public:
 	void Start();
 	~Game();
 private:
+	void DebugUpdate();
 	void Update();
 	void MoveCraft();
 	glm::vec2 Input();
@@ -21,6 +22,6 @@ private:
 
 	glm::vec4 rel_cam_pos{ 0.0f, 10.0f, 30.0f, 1.0f };
 
-	//GL::ObjLoader::Mesh collision_hull;
+	GL::ObjLoader::Mesh collision_hull;
 };
 

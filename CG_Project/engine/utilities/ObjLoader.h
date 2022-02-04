@@ -43,11 +43,10 @@ namespace GL
 			/// <summary>
 			/// returns true if a ray is intersecting with at least one triangle in the mesh.
 			/// </summary>
-			/// <param name="pos">The rays origine</param>
+			/// <param name="origin">The rays origine</param>
 			/// <param name="dir">The rays direction</param>
 			/// <param name="distance">Sets the variable to the closest intersection distance</param>
-			//bool intersectRay_Local(const glm::vec3 pos, const glm::vec3 dir,
-				//f32& distance);
+			bool intersectRay_Local(const glm::vec3 origin, const glm::vec3 dir, f32& distance);
 		};
 	public:
 		static std::vector<Mesh> Load(const char* filename);

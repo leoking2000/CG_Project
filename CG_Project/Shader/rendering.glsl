@@ -186,9 +186,9 @@ vec3 cook_torrance(vec3 frag_to_light, vec3 normal, vec3 frag_to_view)
 
     vec3 halfVector = normalize( frag_to_light + frag_to_view );
 
-    vec3 radiance = vec3(1.0);
+    vec3 radiance = vec3(3.0);
 
-    vec3 F0 = vec3(0.04); 
+    vec3 F0 = vec3(0.1); 
     F0      = mix(F0, albedo, metallic);
     vec3 F  = fresnelSchlick(max(dot(halfVector, frag_to_view), 0.0), F0);
 
@@ -205,10 +205,9 @@ vec3 cook_torrance(vec3 frag_to_light, vec3 normal, vec3 frag_to_view)
     kD *= 1.0 - metallic;
 
     float NdotL = max(dot(normal, frag_to_light), 0.0);
-    vec3 color = (kD * albedo / PI + specular) * radiance * NdotL;
+    vec3 color = (kD * albedo * ao / PI + specular) * radiance * NdotL;
 
-    vec3 ambient = vec3(0.2) * albedo * ao;
-
+    vec3 ambient = vec3(0.2) * albedo;
     if(Has_Lightmap)
     {
         ambient = vec3(0.2) * texture(Lightmap, tex_cord).rgb;

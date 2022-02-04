@@ -33,6 +33,8 @@ namespace GL
 		void NewFrame();
 		void EndFrame();
 
+		void reloadShaders();
+
 		Window win;
 		std::vector<GameObject> objets;
 		Camera cam;
