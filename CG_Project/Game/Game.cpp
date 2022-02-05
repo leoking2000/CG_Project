@@ -7,10 +7,13 @@ collision_hull(GL::ObjLoader::Load("assets/collision_hull.obj")[0])
 {
 	sky_map = "assets/CanopusGround.png";
 
+	// make the red sphere model 
+	GL::ModelManager::Make("sphere", GL::GenarateSphere()).meshs[0].defaultColor = glm::vec3(1.0f, 0.0f, 0.0f);
+
 	// make the craft
 	objets.emplace_back("assets/craft.obj", glm::inverse(glm::lookAt(craft_pos, craft_pos + craft_facing, craft_up)));
 
-	// make the game object for the terrain
+	// make the terrain
 	objets.emplace_back("assets/terrain.obj", glm::mat4(1.0f));
 	GL::ModelManager::GetModel("assets/terrain.obj").meshs[0].Lightmap = "assets/terrain_Lightmap.png";
 
@@ -22,6 +25,9 @@ collision_hull(GL::ObjLoader::Load("assets/collision_hull.obj")[0])
 	model_plant = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -10.0f));
 	model_plant = glm::scale(model_plant, glm::vec3(0.5f, 0.5f, 0.5f));
 	objets.emplace_back("assets/hoewa_Forsteriana_1.obj", model_plant);
+
+	// make sphere game objects
+	objets.emplace_back("sphere", glm::translate(glm::mat4(1.0f), glm::vec3(-100.0f, 50.0f, 0.0f)));
 
 	cam.pos = glm::vec3(0.0f, 60.0f, 0.0f);
 }

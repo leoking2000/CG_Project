@@ -5,8 +5,8 @@
 #include "../imgui/imgui.h"
 
 #include "utilities/log.h"
-#include "graphics/Camera.h"
-#include "graphics/Model.h"
+#include "Camera.h"
+#include "Model.h"
 #include "graphics/Shader.h"
 #include "graphics/FrameBuffer.h"
 #include "graphics/Texture.h"

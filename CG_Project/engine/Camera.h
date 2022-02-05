@@ -1,6 +1,6 @@
 #pragma once
 #include "utilities/GL_Math.h"
-#include "Window.h"
+#include "graphics/Window.h"
 
 namespace GL
 {

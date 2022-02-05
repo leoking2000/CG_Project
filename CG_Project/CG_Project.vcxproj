@@ -145,13 +145,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="engine\graphics\Camera.cpp" />
+    <ClCompile Include="engine\Camera.cpp" />
     <ClCompile Include="engine\Engine.cpp" />
     <ClCompile Include="engine\graphics\FrameBuffer.cpp" />
-    <ClCompile Include="engine\graphics\GenerateMeshes.cpp" />
+    <ClCompile Include="engine\GenerateMeshes.cpp" />
     <ClCompile Include="engine\graphics\IndexBuffer.cpp" />
     <ClCompile Include="engine\graphics\Mesh.cpp" />
-    <ClCompile Include="engine\graphics\Model.cpp" />
+    <ClCompile Include="engine\Model.cpp" />
     <ClCompile Include="Game\Game.cpp" />
     <ClCompile Include="engine\utilities\ObjLoader.cpp" />
     <ClCompile Include="engine\graphics\OpenGL.cpp" />
@@ -172,14 +172,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\GameObject.h" />
-    <ClInclude Include="engine\graphics\Camera.h" />
+    <ClInclude Include="engine\Camera.h" />
     <ClInclude Include="engine\Engine.h" />
     <ClInclude Include="engine\graphics\FrameBuffer.h" />
-    <ClInclude Include="engine\graphics\GenerateMeshes.h" />
+    <ClInclude Include="engine\GenerateMeshes.h" />
     <ClInclude Include="engine\graphics\IndexBuffer.h" />
     <ClInclude Include="engine\graphics\Layout.h" />
     <ClInclude Include="engine\graphics\Mesh.h" />
-    <ClInclude Include="engine\graphics\Model.h" />
+    <ClInclude Include="engine\Model.h" />
     <ClInclude Include="engine\utilities\ObjLoader.h" />
     <ClInclude Include="engine\graphics\OpenGL.h" />
     <ClInclude Include="engine\graphics\Shader.h" />

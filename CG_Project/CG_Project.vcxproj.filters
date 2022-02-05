@@ -72,19 +72,19 @@
     <ClCompile Include="engine\graphics\FrameBuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\graphics\Camera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="engine\utilities\log.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="engine\utilities\ObjLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\graphics\GenerateMeshes.cpp">
+    <ClCompile Include="engine\Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="engine\graphics\Model.cpp">
+    <ClCompile Include="engine\GenerateMeshes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine\Model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -149,9 +149,6 @@
     <ClInclude Include="engine\graphics\FrameBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\graphics\Camera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="engine\GameObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -167,10 +164,13 @@
     <ClInclude Include="engine\utilities\ObjLoader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\graphics\GenerateMeshes.h">
+    <ClInclude Include="engine\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="engine\graphics\Model.h">
+    <ClInclude Include="engine\GenerateMeshes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="engine\Model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -41,42 +41,6 @@ namespace GL
 		return manager.m_models.at(file_name);
 	}
 
-	Model& ModelManager::GetCube()
-	{
-		ModelManager& manager = ModelManager::get();
-
-		if (manager.m_models.find("cube") != manager.m_models.end())
-		{
-			return manager.m_models.at("cube");
-		}
-
-		return ModelManager::Make("cube", GenarateCube());
-	}
-
-	Model& ModelManager::GetSphere()
-	{
-		ModelManager& manager = ModelManager::get();
-
-		if (manager.m_models.find("sphere") != manager.m_models.end())
-		{
-			return manager.m_models.at("sphere");
-		}
-
-		return ModelManager::Make("sphere", GenarateSphere());
-	}
-
-	Model& ModelManager::GetQuard()
-	{
-		ModelManager& manager = ModelManager::get();
-
-		if (manager.m_models.find("quard") != manager.m_models.end())
-		{
-			return manager.m_models.at("quard");
-		}
-
-		return ModelManager::Make("quard", GenarateQuard());
-	}
-
 	Model& ModelManager::Make(const std::string& name, Mesh&& mesh)
 	{
 		ModelManager& manager = ModelManager::get();

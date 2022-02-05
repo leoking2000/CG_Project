@@ -25,14 +25,11 @@ namespace GL
 		ModelManager& operator=(const ModelManager& other) = delete;
 	public:
 		static Model& GetModel(const std::string& file_name);
-		static Model& GetCube();
-		static Model& GetSphere();
-		static Model& GetQuard();
+		static Model& Make(const std::string& name, Mesh&& mesh);
 		static void Clear();
 	private:
 		ModelManager() {};
 	private:
-		static Model& Make(const std::string& name, Mesh&& mesh);
 		static ModelManager& get();
 	private:
 		std::unordered_map<std::string, Model> m_models;

@@ -1,5 +1,5 @@
 #pragma once
-#include "Mesh.h"
+#include "graphics/Mesh.h"
 #include "utilities/ObjLoader.h"
 
 namespace GL
