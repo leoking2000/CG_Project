@@ -9,15 +9,12 @@
 namespace GL
 {
 	Shader::Shader(std::string filename)
-		:
-		m_name(std::move(filename))
 	{
-		m_id = CreateShaderProgram(m_name.c_str());
+		m_id = CreateShaderProgram(filename.c_str());
 	}
 
 	Shader::Shader(Shader&& other)
 		:
-		m_name(std::move(other.m_name)),
 		m_id(other.m_id),
 		m_uniforms(std::move(other.m_uniforms))
 	{
@@ -28,7 +25,6 @@ namespace GL
 	{
 		glCall(glDeleteProgram(m_id));
 
-		m_name = std::move(other.m_name);
 		m_id = other.m_id;
 		m_uniforms = std::move(other.m_uniforms);
 
@@ -40,13 +36,6 @@ namespace GL
 	Shader::~Shader()
 	{
 		glCall(glDeleteProgram(m_id));
-	}
-
-	void Shader::reload()
-	{
-		glCall(glDeleteProgram(m_id));
-
-		m_id = CreateShaderProgram(m_name.c_str());
 	}
 
 	void Shader::Bind() const
@@ -69,7 +58,7 @@ namespace GL
 		}
 		std::string msg = "uniform error ";
 		msg += name;
-		LogError(msg);
+		//LogError(msg);
 		return false;
 	}
 
@@ -83,7 +72,7 @@ namespace GL
 		}
 		std::string msg = "uniform error ";
 		msg += name;
-		LogError(msg);
+		//LogError(msg);
 		return false;
 	}
 
@@ -97,7 +86,7 @@ namespace GL
 		}
 		std::string msg = "uniform error ";
 		msg += name;
-		LogError(msg);
+		//LogError(msg);
 		return false;
 	}
 
@@ -111,7 +100,7 @@ namespace GL
 		}
 		std::string msg = "uniform error ";
 		msg += name;
-		LogError(msg);
+		//LogError(msg);
 		return false;
 	}
 
@@ -125,7 +114,7 @@ namespace GL
 		}
 		std::string msg = "uniform error ";
 		msg += name;
-		LogError(msg);
+		//LogError(msg);
 		return false;
 	}
 
@@ -139,7 +128,7 @@ namespace GL
 		}
 		std::string msg = "uniform error ";
 		msg += name;
-		LogError(msg);
+		//LogError(msg);
 		return false;
 	}
 
@@ -196,8 +185,7 @@ u32 CreateShaderProgramVF(const char* vertexS, const char* fragS)
 	u32 vs = CompileShader(vertexS, GL_VERTEX_SHADER);
 	u32 fs = CompileShader(fragS, GL_FRAGMENT_SHADER);
 
-	assert(vs != 0);
-	assert(fs != 0);
+	if (vs == 0 || fs == 0) return 0;
 
 	glCall(glAttachShader(programid, vs));
 	glCall(glAttachShader(programid, fs));

@@ -98,7 +98,7 @@ float shadow_pcf2x2_weighted(vec3 light_space_xyz)
 
 	// compute the shadow percentage
 	float bottomLeft  = (texture(shadowMap, uv).r > z)                         ? u_opposite : 0.0;
-	float bottomRight = (texture(shadowMap, uv + vec2(xOffset, 0)).r > z)      ? u_ratio : 0.0; 
+	float bottomRight = (texture(shadowMap, uv + vec2(xOffset, 0)).r > z)      ? u_ratio : 0.0;
 	float topLeft     = (texture(shadowMap, uv + vec2(0, yOffset), 0).r > z)   ? u_opposite : 0.0;
 	float topRight    =  texture(shadowMap, uv + vec2(xOffset, yOffset)).r > z ? u_ratio : 0.0;
 
@@ -138,11 +138,11 @@ float DistributionGGX(vec3 N, vec3 H, float roughness)
     float a2     = a*a;
     float NdotH  = max(dot(N, H), 0.0);
     float NdotH2 = NdotH*NdotH;
-	
+
     float num   = a2;
     float denom = (NdotH2 * (a2 - 1.0) + 1.0);
     denom = PI * denom * denom;
-	
+
     return num / denom;
 }
 float GeometrySchlickGGX(float NdotV, float roughness)
@@ -152,7 +152,7 @@ float GeometrySchlickGGX(float NdotV, float roughness)
 
     float num   = NdotV;
     float denom = NdotV * (1.0 - k) + k;
-	
+
     return num / denom;
 }
 float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness)
@@ -161,7 +161,7 @@ float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness)
     float NdotL = max(dot(N, L), 0.0);
     float ggx2  = GeometrySchlickGGX(NdotV, roughness);
     float ggx1  = GeometrySchlickGGX(NdotL, roughness);
-	
+
     return ggx1 * ggx2;
 }
 
@@ -174,7 +174,7 @@ vec3 cook_torrance(vec3 frag_to_light, vec3 normal, vec3 frag_to_view)
         albedo = texture(BaseMap, tex_cord).rgb;
     }
 
-    vec4 mask = vec4(0.0, 0.0, 1.0, 1.0);
+    vec4 mask = vec4(0.0, 1.0, 0.0, 1.0);
     if(Has_MaskMap)
     {
         mask = texture(MaskMap, tex_cord);
@@ -188,7 +188,7 @@ vec3 cook_torrance(vec3 frag_to_light, vec3 normal, vec3 frag_to_view)
 
     vec3 radiance = vec3(3.0);
 
-    vec3 F0 = vec3(0.1); 
+    vec3 F0 = vec3(0.1);
     F0      = mix(F0, albedo, metallic);
     vec3 F  = fresnelSchlick(max(dot(halfVector, frag_to_view), 0.0), F0);
 
@@ -197,17 +197,12 @@ vec3 cook_torrance(vec3 frag_to_light, vec3 normal, vec3 frag_to_view)
 
     vec3 numerator    = NDF * G * F;
     float denominator = 4.0 * max(dot(normal, frag_to_view), 0.0) * max(dot(normal, frag_to_light), 0.0)  + 0.0001;
-    vec3 specular     = numerator / denominator; 
-
-    vec3 kS = F;
-    vec3 kD = vec3(1.0) - kS;
-  
-    kD *= 1.0 - metallic;
+    vec3 specular     = numerator / denominator;
 
     float NdotL = max(dot(normal, frag_to_light), 0.0);
-    vec3 color = (kD * albedo * ao / PI + specular) * radiance * NdotL;
+    vec3 color = ((1.0 - F) * (1.0 - metallic) * albedo / PI + specular) * radiance * NdotL;
 
-    vec3 ambient = vec3(0.2) * albedo;
+    vec3 ambient = vec3(0.2) * albedo * ao;
     if(Has_Lightmap)
     {
         ambient = vec3(0.2) * texture(Lightmap, tex_cord).rgb;

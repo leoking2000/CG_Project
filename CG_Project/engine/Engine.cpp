@@ -68,14 +68,6 @@ namespace GL
 		glfwSwapBuffers(win.glfw_window);
 	}
 
-	void Engine::reloadShaders()
-	{
-		sky_shader.reload();
-		shadow_shader.reload();
-		basic.reload();
-		post_process.reload();
-	}
-
 	void Engine::RenderShadowMap()
 	{
 		shadow_map.Bind();

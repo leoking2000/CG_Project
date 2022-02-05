@@ -27,9 +27,26 @@ collision_hull(GL::ObjLoader::Load("assets/collision_hull.obj")[0])
 	objets.emplace_back("assets/hoewa_Forsteriana_1.obj", model_plant);
 
 	// make sphere game objects
-	objets.emplace_back("sphere", glm::translate(glm::mat4(1.0f), glm::vec3(-100.0f, 50.0f, 0.0f)));
+	spheres_locations.emplace_back(-80.0f, 40.0f, 0.0f);
+	spheres_locations.emplace_back(-60.0f, 30.0f, -100.0f);
+	spheres_locations.emplace_back(0.0f, 25.0f, -200.0f);
+	spheres_locations.emplace_back(70.0f, 30.0f, -230.0f);
+	spheres_locations.emplace_back(150.0f, 25.0f, -230.0f);
+	spheres_locations.emplace_back(200.0f, 20.0f, -290.0f);
+	spheres_locations.emplace_back(140.0f, 30.0f, -350.0f);
+	spheres_locations.emplace_back(60.0f, 40.0f, -340.0f);
+	spheres_locations.emplace_back(-10.0f, 50.0f, -300.0f);
+	spheres_locations.emplace_back(-100.0f, 50.0f, -300.0f);
+	spheres_locations.emplace_back(-140.0f, 55.0f, -240.0f);
 
-	cam.pos = glm::vec3(0.0f, 60.0f, 0.0f);
+	glm::mat4 sphereSize = glm::scale(glm::vec3(2.0f));
+
+	for (glm::vec3& loc : spheres_locations)
+	{
+		objets.emplace_back("sphere", glm::translate(glm::mat4(1.0f), loc) * sphereSize);
+	}
+
+	cam.pos = glm::vec3(-80.0f, 40.0f, 0.0f);
 }
 
 void Game::Start()
@@ -38,8 +55,8 @@ void Game::Start()
 	{
 		NewFrame();
 
-		DebugUpdate();
-		//Update();
+		//DebugUpdate();
+		Update();
 
 
 		ImGui::Begin("FPS");
@@ -58,19 +75,9 @@ void Game::Start()
 
 void Game::DebugUpdate()
 {
-	f32 dt = ElapsedTime() / 1000.0f;
-
-	if (win.MouseButtonIsPress(GLFW_MOUSE_BUTTON_1))
-	{
-		dt = ElapsedTime() / 100.0f;
-	}
+	f32 dt = ElapsedTime() / 100.0f;
 
 	cam.Update(win, dt);
-
-	if (win.KeyIsPress(GLFW_KEY_R))
-	{
-		reloadShaders();
-	}
 }
 
 void Game::Update()
@@ -90,11 +97,6 @@ void Game::Update()
 		craft_right = glm::vec3(1.0f, 0.0f, 0.0f);
 		craft_up = glm::vec3(0.0f, 1.0f, 0.0f);
 	}
-
-	ImGui::Begin("Collition");
-	ImGui::Text("collition: %s", collition ? "true" : "false");
-	ImGui::Text("d: %f", d);
-	ImGui::End();
 }
 
 void Game::MoveCraft()
@@ -122,7 +124,7 @@ void Game::MoveCraft()
 
 glm::vec2 Game::Input()
 {
-	constexpr f32 a = 2.0f;
+	constexpr f32 a = 1.0f;
 
 	glm::vec2 mouse = win.MousePos();
 	glm::vec2 size = win.WindowSize();
