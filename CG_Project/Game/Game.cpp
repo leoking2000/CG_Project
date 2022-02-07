@@ -41,7 +41,8 @@ collision_hull(GL::ObjLoader::Load("assets/collision_hull.obj")[0])
 		objets.emplace_back("sphere", glm::translate(glm::mat4(1.0f), loc) * sphereSize);
 	}
 
-	cam.pos = glm::vec3(-80.0f, 40.0f, 0.0f);
+	cam.pos = objets[0].transform * glm::vec4(20.0f, 5.0f, -20.0f, 1.0f);
+	cam.dir = glm::normalize(craft_pos - cam.pos);
 }
 
 Game::~Game()
@@ -60,6 +61,7 @@ void Game::Start()
 		switch (state)
 		{
 		case START:
+			DebugUpdate();
 			if (win.KeyIsPress(GLFW_KEY_ENTER))
 			{
 				state = PLAY;
@@ -124,13 +126,15 @@ void Game::GameUpdate()
 {
 	MoveCraft();
 
-	cam.pos = objets[0].transform * rel_cam_pos;
+	cam.pos = glm::inverse(glm::lookAt(craft_pos, craft_pos + craft_facing, craft_up)) * rel_cam_pos;
 	cam.dir = craft_facing;
 
-	f32 d;
-	bool collition = collision_hull.intersectRay_Local(craft_pos, craft_facing, d);
+	f32 d1, d2, d3;
+	bool collition1 = collision_hull.intersectRay_Local(craft_pos, craft_facing, d1);
+	bool collition2 = collision_hull.intersectRay_Local(craft_pos + glm::vec3(3.0f, 0.0f, 0.0f), craft_facing, d2);
+	bool collition3 = collision_hull.intersectRay_Local(craft_pos + glm::vec3(-3.0f, 0.0f, 0.0f), craft_facing, d3);
 
-	if (collition && d < 500.0f)
+	if ((collition1 && d1 < 500) || (collition2 && d2 < 500) || (collition3 && d3 < 500))
 	{
 		state = GAMEOVER;
 	}
@@ -156,18 +160,31 @@ void Game::MoveCraft()
 
 	if (dt > 0.016f) dt = 0.016f;
 
+	glm::vec2 input = Input();
+	glm::mat4 rotate = glm::mat4(1.0f);
+
 	if (win.MouseButtonIsPress(GLFW_MOUSE_BUTTON_1))
 	{
-		glm::vec2 input = Input();
-
 		craft_facing = glm::normalize(craft_facing + input.x * craft_right * dt + input.y * craft_up * dt);
 		craft_right = glm::normalize(glm::cross(craft_facing, glm::vec3(0.0f, 1.0f, 0.0f)));
-		craft_up = glm::cross(craft_right, craft_facing);	
+		craft_up = glm::cross(craft_right, craft_facing);
+
+		rotate = glm::rotate(glm::mat4(1.0f), -(PI / 4.0f) * input.x, glm::vec3(0.0f, 0.0f, 1.0f));
 	}
 
 	craft_pos = craft_pos + craft_speed * craft_facing * dt;
 
-	objets[0].transform = glm::inverse(glm::lookAt(craft_pos, craft_pos + craft_facing, craft_up));
+	if (craft_pos.y > max_y)
+	{
+		craft_pos.y = max_y;
+
+		craft_facing = glm::normalize(craft_facing - craft_up * dt);
+		craft_right = glm::normalize(glm::cross(craft_facing, glm::vec3(0.0f, 1.0f, 0.0f)));
+		craft_up = glm::cross(craft_right, craft_facing);
+	}
+
+	objets[0].transform = glm::inverse(glm::lookAt(craft_pos, craft_pos + craft_facing, craft_up)) * rotate;
+
 }
 
 bool Game::IsCollidingWithSpheres()
@@ -186,7 +203,7 @@ bool Game::IsCollidingWithSpheres()
 void Game::OnCollisionWithSpheres()
 {
 	score += 10;
-	//craft_speed += 1;
+	craft_speed += 1;
 }
 
 glm::vec2 Game::Input()
