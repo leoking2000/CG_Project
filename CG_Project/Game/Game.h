@@ -4,26 +4,41 @@ class Game : public GL::Engine
 {
 public:
 	Game();
-	void Start();
 	~Game();
+	void Start();
 private:
+	void Reset();
 	void DebugUpdate();
-	void Update();
+	void GameUpdate();
+private:
 	void MoveCraft();
+	bool IsCollidingWithSpheres();
+	void OnCollisionWithSpheres();
 	glm::vec2 Input();
 private:
-	glm::vec3 craft_pos{ -80.0f, 50.0f, 75.0f };
-	glm::vec3 craft_facing{ 0.0f, 0.0f, -1.0f };
-	glm::vec3 craft_right{ 1.0f, 0.0f, 0.0f };
-	glm::vec3 craft_up{ 0.0f, 1.0f, 0.0f };
+	enum GameState
+	{
+		START,
+		PLAY,
+		GAMEOVER
+	};
 
-	f32 speed = 80.0f;
-
-
+	GameState state;
+private:
+	// craft variables
+	glm::vec3 craft_pos;
+	glm::vec3 craft_facing;
+	glm::vec3 craft_right;
+	glm::vec3 craft_up;
+	f32 craft_speed;
 	glm::vec4 rel_cam_pos{ 0.0f, 10.0f, 30.0f, 1.0f };
-
-	GL::ObjLoader::Mesh collision_hull;
-
+private:
+	// spheres variables
+	f32 sphere_size = 3.0f;
 	std::vector<glm::vec3> spheres_locations;
+	u32 score;
+	bool has_collide_last_frame;
+private:
+	GL::ObjLoader::Mesh collision_hull;
 };
 

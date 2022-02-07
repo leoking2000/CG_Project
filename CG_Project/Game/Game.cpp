@@ -11,35 +11,30 @@ collision_hull(GL::ObjLoader::Load("assets/collision_hull.obj")[0])
 	GL::ModelManager::Make("sphere", GL::GenarateSphere()).meshs[0].defaultColor = glm::vec3(1.0f, 0.0f, 0.0f);
 
 	// make the craft
-	objets.emplace_back("assets/craft.obj", glm::inverse(glm::lookAt(craft_pos, craft_pos + craft_facing, craft_up)));
+	objets.emplace_back("assets/craft.obj", glm::mat4(1.0f));
+	Reset();
 
 	// make the terrain
 	objets.emplace_back("assets/terrain.obj", glm::mat4(1.0f));
 	GL::ModelManager::GetModel("assets/terrain.obj").meshs[0].Lightmap = "assets/terrain_Lightmap.png";
 
-	// make some plants
-	glm::mat4 model_plant = glm::translate(glm::mat4(1.0f), glm::vec3(-130.0f, 0.0f, 80.0f));
-	model_plant = glm::scale(model_plant, glm::vec3(0.2f, 0.2f, 0.2f));
-	objets.emplace_back("assets/hoewa_Forsteriana_1.obj", model_plant);
-
-	model_plant = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -10.0f));
-	model_plant = glm::scale(model_plant, glm::vec3(0.5f, 0.5f, 0.5f));
-	objets.emplace_back("assets/hoewa_Forsteriana_1.obj", model_plant);
-
 	// make sphere game objects
-	spheres_locations.emplace_back(-80.0f, 40.0f, 0.0f);
-	spheres_locations.emplace_back(-60.0f, 30.0f, -100.0f);
 	spheres_locations.emplace_back(0.0f, 25.0f, -200.0f);
-	spheres_locations.emplace_back(70.0f, 30.0f, -230.0f);
 	spheres_locations.emplace_back(150.0f, 25.0f, -230.0f);
-	spheres_locations.emplace_back(200.0f, 20.0f, -290.0f);
 	spheres_locations.emplace_back(140.0f, 30.0f, -350.0f);
-	spheres_locations.emplace_back(60.0f, 40.0f, -340.0f);
 	spheres_locations.emplace_back(-10.0f, 50.0f, -300.0f);
-	spheres_locations.emplace_back(-100.0f, 50.0f, -300.0f);
 	spheres_locations.emplace_back(-140.0f, 55.0f, -240.0f);
+	spheres_locations.emplace_back(-140.0f, 30.0f, -110.0f);
+	spheres_locations.emplace_back(-200.0f, 25.0f, -10.0f);
+	spheres_locations.emplace_back(-100.0f, 15.0f, 80.0f);
+	spheres_locations.emplace_back(-80.0f, 40.0f, -30.0f);
+	spheres_locations.emplace_back( 10.0f, 40.0f, -10.0f);
+	spheres_locations.emplace_back( 100.0f, 60.0f, 60.0f);
+	spheres_locations.emplace_back( 210.0f, 50.0f, 10.0f);
+	spheres_locations.emplace_back( 145.0f, 40.0f, -130.0f);
+	spheres_locations.emplace_back( 250.0f, 60.0f, -130.0f);
 
-	glm::mat4 sphereSize = glm::scale(glm::vec3(2.0f));
+	glm::mat4 sphereSize = glm::scale(glm::vec3(sphere_size));
 
 	for (glm::vec3& loc : spheres_locations)
 	{
@@ -49,21 +44,47 @@ collision_hull(GL::ObjLoader::Load("assets/collision_hull.obj")[0])
 	cam.pos = glm::vec3(-80.0f, 40.0f, 0.0f);
 }
 
+Game::~Game()
+{
+	GL::LogInfo("Destroyed Game");
+}
+
 void Game::Start()
 {
 	while (!win.ShouldWindowClose())
 	{
 		NewFrame();
 
-		//DebugUpdate();
-		Update();
+		std::string msg;
 
+		switch (state)
+		{
+		case START:
+			if (win.KeyIsPress(GLFW_KEY_ENTER))
+			{
+				state = PLAY;
+			}
+			msg = "Press ENTER to Play!!!";
+			break;
+		case PLAY:
+			GameUpdate();
+			break;
+		case GAMEOVER:
+			if (win.KeyIsPress(GLFW_KEY_ENTER))
+			{
+				Reset();
+				state = PLAY;
+			}
+			msg = "GAME OVER!!! \nPress ENTER to Play Again!!!";
+			break;
+		}
 
-		ImGui::Begin("FPS");
-		ImGui::Text("ElapsedTime: %f ms", ElapsedTime());
-		ImGui::Text("FPS: %f\n", glm::round(1 / (ElapsedTime() / 1000.0f)));
+		ImGui::Begin("Score");
+		ImGui::Text("Total Score: %i", score);
+		ImGui::Text("current speed %f", craft_speed);
+		ImGui::Text(msg.c_str());
 		ImGui::End();
-	
+
 		EndFrame();
 
 		if (win.KeyIsPress(GLFW_KEY_ESCAPE))
@@ -73,14 +94,33 @@ void Game::Start()
 	}
 }
 
+void Game::Reset()
+{
+	score = 0;
+
+	craft_speed = 80.0f;
+	craft_pos = glm::vec3(-80.0f, 40.0f, 150.0f);
+	craft_facing = glm::vec3(0.0f, 0.0f, -1.0f);
+	craft_right = glm::vec3(1.0f, 0.0f, 0.0f);
+	craft_up = glm::vec3(0.0f, 1.0f, 0.0f);
+	objets[0].transform = glm::inverse(glm::lookAt(craft_pos, craft_pos + craft_facing, craft_up));
+
+	has_collide_last_frame = false;
+}
+
 void Game::DebugUpdate()
 {
 	f32 dt = ElapsedTime() / 100.0f;
 
 	cam.Update(win, dt);
+
+	ImGui::Begin("FPS");
+	ImGui::Text("ElapsedTime: %f ms", ElapsedTime());
+	ImGui::Text("FPS: %f\n", glm::round(1 / (ElapsedTime() / 1000.0f)));
+	ImGui::End();
 }
 
-void Game::Update()
+void Game::GameUpdate()
 {
 	MoveCraft();
 
@@ -92,18 +132,29 @@ void Game::Update()
 
 	if (collition && d < 500.0f)
 	{
-		craft_pos = glm::vec3(-100.0f, 50.0f, 75.0f);
-		craft_facing = glm::vec3(0.0f, 0.0f, -1.0f);
-		craft_right = glm::vec3(1.0f, 0.0f, 0.0f);
-		craft_up = glm::vec3(0.0f, 1.0f, 0.0f);
+		state = GAMEOVER;
 	}
+
+	if (IsCollidingWithSpheres())
+	{
+		if (!has_collide_last_frame)
+		{
+			OnCollisionWithSpheres();
+		}
+		has_collide_last_frame = true;
+	}
+	else
+	{
+		has_collide_last_frame = false;
+	}
+
 }
 
 void Game::MoveCraft()
 {
 	f32 dt = ElapsedTime() / 1000.0f;
 
-	if (dt > 0.016f) dt = 0.016;
+	if (dt > 0.016f) dt = 0.016f;
 
 	if (win.MouseButtonIsPress(GLFW_MOUSE_BUTTON_1))
 	{
@@ -114,12 +165,28 @@ void Game::MoveCraft()
 		craft_up = glm::cross(craft_right, craft_facing);	
 	}
 
-	if (win.MouseButtonIsPress(GLFW_MOUSE_BUTTON_2) || true)
-	{
-		craft_pos = craft_pos + speed * craft_facing * dt;
-	}
+	craft_pos = craft_pos + craft_speed * craft_facing * dt;
 
 	objets[0].transform = glm::inverse(glm::lookAt(craft_pos, craft_pos + craft_facing, craft_up));
+}
+
+bool Game::IsCollidingWithSpheres()
+{
+	for (glm::vec3& s_pos : spheres_locations)
+	{
+		if (glm::distance(craft_pos, s_pos) < sphere_size)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void Game::OnCollisionWithSpheres()
+{
+	score += 10;
+	//craft_speed += 1;
 }
 
 glm::vec2 Game::Input()
@@ -133,11 +200,6 @@ glm::vec2 Game::Input()
 	f32 y = -a + (2 * a / size.y) * mouse.y;
 
 	return glm::vec2(x, -y);
-}
-
-Game::~Game()
-{
-	GL::LogInfo("Destroyed Game");
 }
 
 
