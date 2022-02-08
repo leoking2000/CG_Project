@@ -51,6 +51,8 @@ uniform vec4 lightDir; // camera space
 uniform sampler2D shadowMap;
 uniform float bias;
 
+uniform sampler2D skyMap;
+
 uniform vec3 BaseColor;
 uniform sampler2D BaseMap;
 uniform int Has_BaseMap;
@@ -165,6 +167,10 @@ float GeometrySmith(vec3 N, vec3 V, vec3 L, float roughness)
     return ggx1 * ggx2;
 }
 
+float atan2(float y, float x)
+{
+    return x == 0.0 ? sign(y)*PI/2 : atan(y, x);
+}
 
 vec3 cook_torrance(vec3 frag_to_light, vec3 normal, vec3 frag_to_view)
 {
@@ -174,14 +180,26 @@ vec3 cook_torrance(vec3 frag_to_light, vec3 normal, vec3 frag_to_view)
         albedo = texture(BaseMap, tex_cord).rgb;
     }
 
-    vec4 mask = vec4(0.0, 1.0, 0.0, 1.0);
+    vec4 mask = vec4(0.0, 1.0, 0.0, 0.5);
     if(Has_MaskMap)
     {
         mask = texture(MaskMap, tex_cord);
     }
     float metallic = mask.r;
-    float roughness = 1 - mask.a;
     float ao = mask.g;
+    float roughness = 1 - mask.a;
+
+    if(roughness < 0.1)
+    {
+        vec3 r = reflect( -frag_to_view, normal );
+        float a1 = atan2(r.x, r.z);
+        float a2 = atan2(r.y, sqrt(r.x * r.x + r.z * r.z));
+
+        float u = (a1 + PI) / (2 * PI);
+        float v = (a2 + (PI / 2)) / PI;
+
+        albedo = albedo + texture(skyMap, vec2(u, v)).rgb;
+    }
 
 
     vec3 halfVector = normalize( frag_to_light + frag_to_view );

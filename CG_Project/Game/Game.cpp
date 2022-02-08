@@ -8,7 +8,7 @@ collision_hull(GL::ObjLoader::Load("assets/collision_hull.obj")[0])
 	sky_map = "assets/CanopusGround.png";
 
 	// make the red sphere model 
-	GL::ModelManager::Make("sphere", GL::GenarateSphere()).meshs[0].defaultColor = glm::vec3(1.0f, 0.0f, 0.0f);
+	GL::ModelManager::Make("sphere", GL::GenarateSphere()).meshs[0].defaultColor = glm::vec3(0.0f, 0.0f, 1.0f);
 
 	// make the craft
 	objets.emplace_back("assets/craft.obj", glm::mat4(1.0f));

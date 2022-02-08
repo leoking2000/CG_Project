@@ -118,13 +118,14 @@ namespace GL
 		glCall(glDisable(GL_CULL_FACE));
 
 		sky_shader.Bind();
-		TextureManager::GetTexture(sky_map).Bind(0);
-		sky_shader.SetUniform("skybox", 0);
+		TextureManager::BindTexture(sky_map, 6);
+		sky_shader.SetUniform("skybox", 6);
 
 		sky_sphere.Draw(glm::mat4(glm::mat3(cam_view)), proj, sky_shader, false);
 
 		glCall(glDepthMask(GL_TRUE));
 		glCall(glEnable(GL_CULL_FACE));
+		// render geometry
 
 		for (GameObject& obj : objets)
 		{
@@ -138,6 +139,9 @@ namespace GL
 			shadow_map.BindDepthTexture(5);
 			basic.SetUniform("shadowMap", 5);
 			basic.SetUniform("bias", 0.0000005f);
+
+			TextureManager::BindTexture(sky_map, 6);
+			basic.SetUniform("skyMap", 6);
 
 			basic.SetUniform("lightSpaceMatrix", lightSpaceMatrix);
 			basic.SetUniform("lightDir", cam_view * glm::vec4(light_dir, 0.0f));
