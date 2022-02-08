@@ -5,7 +5,25 @@ Game::Game()
 GL::Engine(1600, 900, "Computer Graphics Project", true),
 collision_hull(GL::ObjLoader::Load("assets/collision_hull.obj")[0])
 {
-	sky_map = "assets/CanopusGround.png";
+	//
+	// renderer settings
+	//
+	renderer.light_proj = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 1000.0f);
+	renderer.light_view = glm::lookAt(glm::vec3(0.0f, 450.0f, -150.0f), glm::vec3(0.0f, 0.0f, -130.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	renderer.light_dir = -glm::normalize(glm::vec3(0.0f, 500.0f, -100.0f));
+	renderer.lightSpaceMatrix = renderer.light_proj * renderer.light_view;
+	renderer.shadow_bias = 0.0000005f;
+
+	renderer.fov_angle = glm::radians(45.0f);
+	renderer.min_z = 0.001f;
+	renderer.max_z = 1000.0f;
+
+	renderer.clear_color = glm::vec3(0.3f, 0.3f, 0.8f);
+	renderer.sky_map = "assets/CanopusGround.png";
+
+	//
+	// Create the scene
+	//
 
 	// make the red sphere model 
 	GL::ModelManager::Make("sphere", GL::GenarateSphere()).meshs[0].defaultColor = glm::vec3(0.0f, 0.0f, 1.0f);

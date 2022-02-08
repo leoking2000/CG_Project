@@ -169,6 +169,7 @@
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="engine\utilities\log.cpp" />
+    <ClCompile Include="engine\Renderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\GameObject.h" />
@@ -199,6 +200,7 @@
     <ClInclude Include="engine\utilities\defines.h" />
     <ClInclude Include="engine\utilities\log.h" />
     <ClInclude Include="engine\utilities\GL_Math.h" />
+    <ClInclude Include="engine\Renderer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

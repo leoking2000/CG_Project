@@ -165,7 +165,19 @@ u32 CompileShader(const char* source, u32 type)
 	glCall(glGetShaderiv(id, GL_COMPILE_STATUS, &resoult));
 	if (resoult == GL_FALSE)
 	{
-		GL::LogError(type == GL_VERTEX_SHADER ? "<VERTEX SHADER COMPILE ERROR>" : "<FRAGMENT SHADER COMPILE ERROR>");
+		if (type == GL_VERTEX_SHADER)
+		{
+			GL::LogError("<VERTEX SHADER COMPILE ERROR>");
+		}
+		else if (type == GL_FRAGMENT_SHADER)
+		{
+			GL::LogError("<FRAGMENT SHADER COMPILE ERROR>");
+		}
+		if (type == GL_GEOMETRY_SHADER)
+		{
+			GL::LogError("<GEOMETRY SHADER COMPILE ERROR>");
+		}
+	
 		int len;
 		glCall(glGetShaderiv(id, GL_INFO_LOG_LENGTH, &len));
 		char* msg = (char*)alloca(len * sizeof(char));
@@ -178,22 +190,35 @@ u32 CompileShader(const char* source, u32 type)
 	return id;
 }
 
-u32 CreateShaderProgramVF(const char* vertexS, const char* fragS)
+u32 CreateShaderProgramVFG(const char* vertexS, const char* fragS, const char* geoS)
 {
 	glCall(u32 programid = glCreateProgram());
 
 	u32 vs = CompileShader(vertexS, GL_VERTEX_SHADER);
 	u32 fs = CompileShader(fragS, GL_FRAGMENT_SHADER);
+	u32 gs = 0;
+	if (geoS != nullptr)
+	{
+		gs = CompileShader(geoS, GL_GEOMETRY_SHADER);
+	}
 
-	if (vs == 0 || fs == 0) return 0;
+	assert(vs != 0);
+	assert(fs != 0);
+	if (geoS != nullptr)
+	{
+		assert(gs != 0);
+	}
 
 	glCall(glAttachShader(programid, vs));
 	glCall(glAttachShader(programid, fs));
+	if (geoS != nullptr) glCall(glAttachShader(programid, gs));
+
 	glCall(glLinkProgram(programid));
 	glCall(glValidateProgram(programid));
 
 	glCall(glDeleteShader(vs));
 	glCall(glDeleteShader(fs));
+	if (geoS != nullptr) glCall(glDeleteShader(gs));
 
 	return programid;
 }
@@ -210,11 +235,12 @@ u32 GL::Shader::CreateShaderProgram(const char* filename)
 	{
 		NONE = -1,
 		VERTEX = 0,
-		FRAGMENT = 1
+		FRAGMENT = 1,
+		GEOMETRY = 2
 	};
 
 	std::string line;
-	std::stringstream ss[2];
+	std::stringstream ss[3];
 	ShaderType type = ShaderType::NONE;
 
 	while (getline(file, line))
@@ -229,6 +255,10 @@ u32 GL::Shader::CreateShaderProgram(const char* filename)
 			{
 				type = ShaderType::FRAGMENT;
 			}
+			else if (line.find("geometry") != std::string::npos)
+			{
+				type = ShaderType::GEOMETRY;
+			}
 		}
 		else
 		{
@@ -236,7 +266,13 @@ u32 GL::Shader::CreateShaderProgram(const char* filename)
 		}
 	}
 
-	u32 program = CreateShaderProgramVF(ss[0].str().c_str(), ss[1].str().c_str());
+	const char* geoS = nullptr;
+	if (!ss[2].str().empty())
+	{
+		geoS = ss[2].str().c_str();
+	}
+
+	u32 program = CreateShaderProgramVFG(ss[0].str().c_str(), ss[1].str().c_str(), geoS);
 
 	std::string msg = "Creation of shader from file ";
 	msg += filename;

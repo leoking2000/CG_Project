@@ -51,6 +51,7 @@ uniform vec4 lightDir; // camera space
 uniform sampler2D shadowMap;
 uniform float bias;
 
+uniform int Has_SkyMap;
 uniform sampler2D skyMap;
 
 uniform vec3 BaseColor;
@@ -180,7 +181,7 @@ vec3 cook_torrance(vec3 frag_to_light, vec3 normal, vec3 frag_to_view)
         albedo = texture(BaseMap, tex_cord).rgb;
     }
 
-    vec4 mask = vec4(0.0, 1.0, 0.0, 0.5);
+    vec4 mask = vec4(0.0, 1.0, 0.0, 1.0);
     if(Has_MaskMap)
     {
         mask = texture(MaskMap, tex_cord);
@@ -189,7 +190,7 @@ vec3 cook_torrance(vec3 frag_to_light, vec3 normal, vec3 frag_to_view)
     float ao = mask.g;
     float roughness = 1 - mask.a;
 
-    if(roughness < 0.1)
+    if(roughness < 0.1 && Has_SkyMap == 1)
     {
         vec3 r = reflect( -frag_to_view, normal );
         float a1 = atan2(r.x, r.z);
