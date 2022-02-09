@@ -58,6 +58,8 @@ namespace GL
 			if (MaskMap.empty())
 			{
 				shader.SetUniform("Has_MaskMap", 0);
+				shader.SetUniform("metallic", metallic);
+				shader.SetUniform("glossiness", glossiness);
 			}
 			else
 			{

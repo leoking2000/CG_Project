@@ -61,6 +61,8 @@ uniform int Has_BaseMap;
 uniform sampler2D NormalMap;
 uniform int Has_NormalMap;
 
+uniform float metallic;
+uniform float glossiness;
 uniform sampler2D MaskMap;
 uniform int Has_MaskMap;
 
@@ -181,7 +183,7 @@ vec3 cook_torrance(vec3 frag_to_light, vec3 normal, vec3 frag_to_view)
         albedo = texture(BaseMap, tex_cord).rgb;
     }
 
-    vec4 mask = vec4(0.0, 1.0, 0.0, 1.0);
+    vec4 mask = vec4(metallic, 1.0, 0.0, glossiness);
     if(Has_MaskMap)
     {
         mask = texture(MaskMap, tex_cord);

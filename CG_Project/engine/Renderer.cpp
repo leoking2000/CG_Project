@@ -16,7 +16,7 @@ namespace GL
 	void Renderer::RenderTo(Window& win, const glm::mat4& cam_view, const std::vector<GameObject>& gameObjects)
 	{
 		RenderShadowMap(gameObjects);
-		LightingPass(win, cam_view, gameObjects);
+		Rendering(win, cam_view, gameObjects);
 		PostProcess(win);
 	}
 
@@ -45,7 +45,7 @@ namespace GL
 		shadow_map.UnBind();
 	}
 
-	void Renderer::LightingPass(Window& win, const glm::mat4& cam_view, const std::vector<GameObject>& gameObjects)
+	void Renderer::Rendering(Window& win, const glm::mat4& cam_view, const std::vector<GameObject>& gameObjects)
 	{
 		win.fb->Bind();
 
@@ -90,32 +90,32 @@ namespace GL
 				continue;
 			}
 
-			lighting_shader.Bind();
+			rendering_shader.Bind();
 
 			shadow_map.BindDepthTexture(5);
-			lighting_shader.SetUniform("shadowMap", 5);
-			lighting_shader.SetUniform("bias", shadow_bias);
+			rendering_shader.SetUniform("shadowMap", 5);
+			rendering_shader.SetUniform("bias", shadow_bias);
 
 			if (!sky_map.empty())
 			{
-				lighting_shader.SetUniform("Has_SkyMap", 1);
+				rendering_shader.SetUniform("Has_SkyMap", 1);
 				TextureManager::BindTexture(sky_map, 6);
-				lighting_shader.SetUniform("skyMap", 6);
+				rendering_shader.SetUniform("skyMap", 6);
 			}
 			else
 			{
-				lighting_shader.SetUniform("Has_SkyMap", 0);
+				rendering_shader.SetUniform("Has_SkyMap", 0);
 			}
 
-			lighting_shader.SetUniform("lightSpaceMatrix", lightSpaceMatrix);
-			lighting_shader.SetUniform("lightDir", cam_view * glm::vec4(light_dir, 0.0f));
+			rendering_shader.SetUniform("lightSpaceMatrix", lightSpaceMatrix);
+			rendering_shader.SetUniform("lightDir", cam_view * glm::vec4(light_dir, 0.0f));
 
-			lighting_shader.SetUniform("model", obj.transform);
+			rendering_shader.SetUniform("model", obj.transform);
 
-			ModelManager::GetModel(obj.model_name).Draw(cam_view, proj, lighting_shader);
+			ModelManager::GetModel(obj.model_name).Draw(cam_view, proj, rendering_shader);
 		}
 
-		lighting_shader.UnBind();
+		rendering_shader.UnBind();
 		win.fb->UnBind();
 	}
 

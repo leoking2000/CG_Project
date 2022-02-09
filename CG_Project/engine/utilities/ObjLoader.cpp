@@ -20,7 +20,7 @@ namespace GL
 		{
 			std::string msg(filename);
 			msg += " Failed Loading";
-			LogInfo(msg);
+			LogError(msg);
 			return std::vector<ObjLoader::Mesh>();
 		}
 

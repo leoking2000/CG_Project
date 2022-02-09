@@ -32,7 +32,7 @@ private:
 	glm::vec3 craft_up;
 	f32 craft_speed;
 	const glm::vec4 rel_cam_pos{ 0.0f, 10.0f, 30.0f, 1.0f };
-	const f32 max_y = 100.0f;
+	const f32 max_y = 80.0f;
 private:
 	// spheres variables
 	const f32 sphere_size = 4.0f;

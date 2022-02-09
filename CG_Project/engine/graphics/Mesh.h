@@ -13,6 +13,8 @@ namespace GL
 		void Draw(const glm::mat4& view, const glm::mat4& proj, const Shader& shader, bool use_mat = true);
 	public:
 		glm::vec3 defaultColor;
+		f32 metallic = 0.0f;
+		f32 glossiness = 1.0f;
 
 		std::string BaseMap;
 		std::string MaskMap;

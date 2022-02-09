@@ -36,24 +36,21 @@ namespace GL
 		std::string sky_map;
 
 	private:
-		// shadow pass
+		// shadow map
 		static constexpr u32 SHADOW_SIZE = 4096;
-		Shader shadow_shader{ "Shader/shadow_pass.glsl" };
+		Shader shadow_shader{ "Shader/shadow_map.glsl" };
 		FrameBuffer shadow_map{ SHADOW_SIZE, SHADOW_SIZE, true };
 
 		void RenderShadowMap(const std::vector<GameObject>& gameObjects);
 	private:
-		//  geometry pass
-		//Shader geometry_shader{ "Shader/geometry_pass.glsl" };
-	private:
-		// lighting pass
-		Shader lighting_shader{ "Shader/lighting_pass.glsl" };
+		// Rendering
+		Shader rendering_shader{ "Shader/rendering.glsl" };
 
 		//skybox
 		Shader sky_shader{ "Shader/sky.glsl" };
 		Mesh sky_sphere{ GenarateSphere() };
 
-		void LightingPass(Window& win, const glm::mat4& cam_view, const std::vector<GameObject>& gameObjects);
+		void Rendering(Window& win, const glm::mat4& cam_view, const std::vector<GameObject>& gameObjects);
 	private:
 		// post process
 		Shader post_process{ "Shader/post_process.glsl" };
