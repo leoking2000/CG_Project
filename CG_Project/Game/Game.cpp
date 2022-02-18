@@ -25,135 +25,134 @@ collision_hull(GL::ObjLoader::Load("assets/collision_hull.obj")[0])
 	// Create the scene
 	//
 
-	// make the red sphere model 
+	// make the sphere model for the score points
 	GL::ModelManager::Make("sphere", GL::GenarateSphere()).meshs[0].defaultColor = glm::vec3(0.0f, 0.0f, 1.0f);
 
 	// make Phormium_1 model
 	GL::ModelManager::GetModel("assets/Phormium_1.obj").meshs[0].glossiness = 0.0f;
 
 	// make the craft
-	objets.emplace_back("assets/craft.obj", glm::mat4(1.0f));
+	objects.emplace_back("assets/craft.obj", glm::mat4(1.0f));
 	Reset();
 
+	// make on "broken" craft
+	objects.emplace_back("assets/craft.obj", 
+		glm::translate(glm::vec3(-230.0f, 5.0f, -180.0f)) *
+		glm::rotate(glm::mat4(1.0f), PI / 6.0f + 0.06f, glm::vec3(0.0f, 1.0f, 0.0f)) *
+		glm::rotate(glm::mat4(1.0f), -PI / 6.0f, glm::vec3(0.0f, 0.0f, 1.0f)));
+
 	// make the terrain
-	objets.emplace_back("assets/terrain.obj", glm::mat4(1.0f));
+	objects.emplace_back("assets/terrain.obj", glm::mat4(1.0f));
 	GL::ModelManager::GetModel("assets/terrain.obj").meshs[0].Lightmap = "assets/terrain_Lightmap.png";
 
 	// make the grass
-	objets.emplace_back("assets/Phormium_1.obj",
+	objects.emplace_back("assets/Phormium_3.obj",
 		glm::translate(glm::vec3(-70.0f, -2.0f, -10.0f)) *
 		glm::scale(glm::vec3(2.0f))
 	);
 
-	objets.emplace_back("assets/Phormium_1.obj",
+	objects.emplace_back("assets/Phormium_1.obj",
 		glm::translate(glm::vec3( 10.0f, -2.0f, -40.0f)) *
 		glm::scale(glm::vec3(2.0f))
 	);
 
-	objets.emplace_back("assets/Phormium_1.obj",
+	objects.emplace_back("assets/Phormium_3.obj",
 		glm::translate(glm::vec3(75.0f, 3.0f, -40.0f)) *
 		glm::scale(glm::vec3(1.5f)) *
 		glm::rotate(glm::mat4(1.0f), PI / 6.0f, glm::vec3(0.0f, 0.0f, 1.0f))
 	);
 
-	objets.emplace_back("assets/Phormium_1.obj",
+	objects.emplace_back("assets/Phormium_1.obj",
 		glm::translate(glm::vec3(100.0f, 0.0f, 70.0f)) *
 		glm::scale(glm::vec3(2.0f))
 	);
 
-	objets.emplace_back("assets/Phormium_1.obj",
+	objects.emplace_back("assets/Phormium_1.obj",
 		glm::translate(glm::vec3(130.0f, 5.0f, 145.0f)) *
 		glm::scale(glm::vec3(2.0f)) *
 		glm::rotate(glm::mat4(1.0f), PI / 6.0f, glm::vec3(0.0f, 0.0f, 1.0f))
 	);
 
-	objets.emplace_back("assets/Phormium_1.obj",
+	objects.emplace_back("assets/Phormium_1.obj",
 		glm::translate(glm::vec3(-140.0f, -2.0f, 100.0f)) *
 		glm::scale(glm::vec3(3.0f))
 	);
 
-	objets.emplace_back("assets/Phormium_1.obj",
+	objects.emplace_back("assets/Phormium_1.obj",
 		glm::translate(glm::vec3(-160.0f, 3.0f, -30.0f)) *
 		glm::scale(glm::vec3(2.0f)) *
 		glm::rotate(glm::mat4(1.0f), PI / 6.0f, glm::vec3(0.0f, 0.0f, 1.0f))
 	);
 
-	objets.emplace_back("assets/Phormium_1.obj",
+	objects.emplace_back("assets/Phormium_1.obj",
 		glm::translate(glm::vec3(-280.0f, 5.0f, 10.0f)) *
 		glm::scale(glm::vec3(4.0f)) *
 		glm::rotate(glm::mat4(1.0f), -PI / 4.0f, glm::vec3(0.0f, 0.0f, 1.0f))
 	);
 
-	objets.emplace_back("assets/Phormium_1.obj",
+	objects.emplace_back("assets/Phormium_3.obj",
 		glm::translate(glm::vec3(-40.0f, 5.0f, -90.0f)) *
 		glm::scale(glm::vec3(2.0f)) *
 		glm::rotate(glm::mat4(1.0f), PI / 4.0f, glm::vec3(0.0f, 0.0f, 1.0f))
 	);
 
-	objets.emplace_back("assets/Phormium_1.obj",
+	objects.emplace_back("assets/Phormium_1.obj",
 		glm::translate(glm::vec3(-160.0f, 2.0f, -160.0f)) *
 		glm::scale(glm::vec3(5.0f))
 	);
 
-	objets.emplace_back("assets/Phormium_1.obj",
+	objects.emplace_back("assets/Phormium_3.obj",
 		glm::translate(glm::vec3(-230.0f, 1.5f, -250.0f)) *
 		glm::scale(glm::vec3(1.0f))
 	);
 
-	objets.emplace_back("assets/Phormium_1.obj",
+	objects.emplace_back("assets/Phormium_1.obj",
 		glm::translate(glm::vec3(0.0f, -3.0f, -250.0f)) *
 		glm::scale(glm::vec3(2.0f))
 	);
 
-	objets.emplace_back("assets/Phormium_1.obj",
+	objects.emplace_back("assets/Phormium_1.obj",
 		glm::translate(glm::vec3(-50.0f, 2.0f, -320.0f)) *
 		glm::scale(glm::vec3(2.0f))
 	);
 
-	objets.emplace_back("assets/Phormium_1.obj",
+	objects.emplace_back("assets/Phormium_1.obj",
 		glm::translate(glm::vec3(-100.0f, 2.0f, -270.0f)) *
 		glm::scale(glm::vec3(3.0f))
 	);
 
-	objets.emplace_back("assets/Phormium_1.obj",
+	objects.emplace_back("assets/Phormium_1.obj",
 		glm::translate(glm::vec3(140.0f, 5.0f, -350.0f)) * 
 		glm::scale(glm::vec3(3.0f))
 	);
 
-	objets.emplace_back("assets/Phormium_1.obj",
+	objects.emplace_back("assets/Phormium_3.obj",
 		glm::translate(glm::vec3(170.0f, 5.0f, -160.0f)) *
 		glm::scale(glm::vec3(3.0f))
 	);
 
-	objets.emplace_back("assets/Phormium_1.obj",
+	objects.emplace_back("assets/Phormium_3.obj",
 		glm::translate(glm::vec3(200.0f, 5.0f, -300.0f)) *
 		glm::scale(glm::vec3(3.0f))
 	);
 
 	// make sphere game objects
-	spheres_locations.emplace_back(0.0f, 25.0f, -200.0f);
-	spheres_locations.emplace_back(150.0f, 25.0f, -230.0f);
-	spheres_locations.emplace_back(140.0f, 30.0f, -350.0f);
-	spheres_locations.emplace_back(-10.0f, 50.0f, -300.0f);
-	spheres_locations.emplace_back(-140.0f, 55.0f, -240.0f);
-	spheres_locations.emplace_back(-140.0f, 30.0f, -110.0f);
-	spheres_locations.emplace_back(-200.0f, 25.0f, -10.0f);
-	spheres_locations.emplace_back(-100.0f, 15.0f, 80.0f);
-	spheres_locations.emplace_back(-80.0f, 40.0f, -30.0f);
-	spheres_locations.emplace_back( 10.0f, 40.0f, -10.0f);
-	spheres_locations.emplace_back( 100.0f, 60.0f, 60.0f);
-	spheres_locations.emplace_back( 210.0f, 50.0f, 10.0f);
-	spheres_locations.emplace_back( 145.0f, 40.0f, -130.0f);
-	spheres_locations.emplace_back( 250.0f, 60.0f, -130.0f);
+	score_points.emplace_back(glm::vec3(    0.0f,  25.0f, -200.0f ), "sphere", objects);
+	score_points.emplace_back(glm::vec3(  150.0f,  25.0f, -230.0f ), "sphere", objects);
+	score_points.emplace_back(glm::vec3(  140.0f,  30.0f, -350.0f ), "sphere", objects);
+	score_points.emplace_back(glm::vec3(  -10.0f,  50.0f, -300.0f ), "sphere", objects);
+	score_points.emplace_back(glm::vec3( -140.0f,  55.0f, -240.0f ), "sphere", objects);
+	score_points.emplace_back(glm::vec3( -140.0f,  30.0f, -110.0f ), "sphere", objects);
+	score_points.emplace_back(glm::vec3( -200.0f,  25.0f,  -10.0f ), "sphere", objects);
+	score_points.emplace_back(glm::vec3( -100.0f,  15.0f,   80.0f ), "sphere", objects);
+	score_points.emplace_back(glm::vec3(  -80.0f,  40.0f,  -30.0f ), "sphere", objects);
+	score_points.emplace_back(glm::vec3(   10.0f,  40.0f,  -10.0f ), "sphere", objects);
+	score_points.emplace_back(glm::vec3(  100.0f,  60.0f,   60.0f ), "sphere", objects);
+	score_points.emplace_back(glm::vec3(  210.0f,  50.0f,   10.0f ), "sphere", objects);
+	score_points.emplace_back(glm::vec3(  145.0f,  40.0f, -130.0f ), "sphere", objects);
+	score_points.emplace_back(glm::vec3(  250.0f,  60.0f, -130.0f ), "sphere", objects);
 
-	glm::mat4 sphereSize = glm::scale(glm::vec3(sphere_size));
-
-	for (glm::vec3& loc : spheres_locations)
-	{
-		objets.emplace_back("sphere", glm::translate(glm::mat4(1.0f), loc) * sphereSize);
-	}
-
-	cam.pos = objets[0].transform * glm::vec4(20.0f, 5.0f, -20.0f, 1.0f);
+	cam.pos = objects[0].transform * glm::vec4(20.0f, 5.0f, -20.0f, 1.0f);
 	cam.dir = glm::normalize(craft_pos - cam.pos);
 }
 
@@ -223,9 +222,7 @@ void Game::Reset()
 	craft_facing = glm::vec3(0.0f, 0.0f, -1.0f);
 	craft_right = glm::vec3(1.0f, 0.0f, 0.0f);
 	craft_up = glm::vec3(0.0f, 1.0f, 0.0f);
-	objets[0].transform = glm::inverse(glm::lookAt(craft_pos, craft_pos + craft_facing, craft_up));
-
-	has_collide_last_frame = false;
+	objects[0].transform = glm::inverse(glm::lookAt(craft_pos, craft_pos + craft_facing, craft_up));
 }
 
 void Game::DebugUpdate()
@@ -252,17 +249,16 @@ void Game::GameUpdate()
 		state = GAMEOVER;
 	}
 
-	if (IsCollidingWithSpheres())
+	for (ScorePoint& sp : score_points)
 	{
-		if (!has_collide_last_frame)
-		{
-			OnCollisionWithSpheres();
-		}
-		has_collide_last_frame = true;
-	}
-	else
-	{
-		has_collide_last_frame = false;
+		sp.Tick(craft_pos, ElapsedTime(), 
+			[&]() -> void
+			{
+				score += 10;
+				craft_speed += 1;
+			},
+			objects
+		);
 	}
 
 }
@@ -296,24 +292,13 @@ void Game::MoveCraft()
 		craft_up = glm::cross(craft_right, craft_facing);
 	}
 
-	objets[0].transform = glm::inverse(glm::lookAt(craft_pos, craft_pos + craft_facing, craft_up)) * rotate;
+	objects[0].transform = glm::inverse(glm::lookAt(craft_pos, craft_pos + craft_facing, craft_up)) * rotate;
 
 }
 
-bool Game::IsCollidingWithSpheres()
-{
-	for (glm::vec3& s_pos : spheres_locations)
-	{
-		if (glm::distance(craft_pos, s_pos) < sphere_size)
-		{
-			return true;
-		}
-	}
 
-	return false;
-}
 
-void Game::OnCollisionWithSpheres()
+void Game::OnCollision_ScorePoint()
 {
 	score += 10;
 	craft_speed += 1;

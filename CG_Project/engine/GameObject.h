@@ -1,5 +1,6 @@
 #pragma once
 #include "utilities/GL_Math.h"
+#include <string>
 
 namespace GL
 {

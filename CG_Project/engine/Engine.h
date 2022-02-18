@@ -22,12 +22,12 @@ namespace GL
 		float ElapsedTime(); // in microseconds
 		void NewFrame();
 		void EndFrame();
-	protected:
+	public:
 		Window win;
 		Renderer renderer;
 		Camera cam;
 
-		std::vector<GameObject> objets;
+		std::vector<GameObject> objects;
 	private:
 		std::chrono::high_resolution_clock::time_point currentTime = std::chrono::high_resolution_clock::now();
 		std::chrono::high_resolution_clock::time_point previousTime = std::chrono::high_resolution_clock::now();

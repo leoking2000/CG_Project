@@ -1,4 +1,5 @@
 #include "Engine.h"
+#include "ScorePoint.h"
 
 class Game : public GL::Engine
 {
@@ -12,8 +13,7 @@ private:
 	void GameUpdate();
 private:
 	void MoveCraft();
-	bool IsCollidingWithSpheres();
-	void OnCollisionWithSpheres();
+	void OnCollision_ScorePoint();
 	glm::vec2 Input();
 private:
 	enum GameState
@@ -34,11 +34,10 @@ private:
 	const glm::vec4 rel_cam_pos{ 0.0f, 10.0f, 30.0f, 1.0f };
 	const f32 max_y = 80.0f;
 private:
-	// spheres variables
-	const f32 sphere_size = 4.0f;
-	std::vector<glm::vec3> spheres_locations;
+	// ScorePoints
+	std::vector<ScorePoint> score_points;
 	u32 score;
-	bool has_collide_last_frame;
+
 private:
 	GL::ObjLoader::Mesh collision_hull;
 };
