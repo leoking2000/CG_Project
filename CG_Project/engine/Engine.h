@@ -3,8 +3,6 @@
 #include "Renderer.h"
 #include "Camera.h"
 
-#include "../imgui/imgui.h"
-
 namespace GL
 {
 	class Engine
