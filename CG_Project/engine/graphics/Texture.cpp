@@ -6,10 +6,10 @@
 
 namespace GL
 {
-	Texture::Texture(const std::string& file_name)
+	Texture::Texture(const std::string& file_name, bool nearest)
 	{
 		m_id = 0;
-		reload(file_name);
+		reload(file_name, nearest);
 	}
 
 	Texture::Texture(Texture&& other)
@@ -35,7 +35,7 @@ namespace GL
 		glCall(glDeleteTextures(1, &m_id));
 	}
 
-	void Texture::reload(const std::string& file_name)
+	void Texture::reload(const std::string& file_name, bool nearest)
 	{
 		stbi_set_flip_vertically_on_load(1);
 
@@ -55,8 +55,16 @@ namespace GL
 		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT));
 		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT));
 
-		glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
-		glCall(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+		if (nearest)
+		{
+			glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST ));
+			glCall(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST ));
+		}
+		else
+		{
+			glCall(glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR));
+			glCall(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR));
+		}
 
 		//glCall(glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR));
 		//glCall(glGenerateMipmap(GL_TEXTURE_2D));

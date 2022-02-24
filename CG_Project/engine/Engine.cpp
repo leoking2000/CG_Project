@@ -48,7 +48,7 @@ namespace GL
 
 	void Engine::EndFrame()
 	{
-		renderer.RenderTo(win, cam.GetCameraView(), objects);
+		renderer.RenderToScreen(win, continous_time);
 
 		previousTime = currentTime;
 		ImGui::Render();

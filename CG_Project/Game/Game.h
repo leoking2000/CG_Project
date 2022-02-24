@@ -13,7 +13,6 @@ private:
 	void GameUpdate();
 private:
 	void MoveCraft();
-	void OnCollision_ScorePoint();
 	glm::vec2 Input();
 private:
 	enum GameState

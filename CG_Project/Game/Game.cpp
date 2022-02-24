@@ -167,8 +167,6 @@ void Game::Start()
 	{
 		NewFrame();
 
-		std::string msg;
-
 		switch (state)
 		{
 		case START:
@@ -178,7 +176,6 @@ void Game::Start()
 				state = PLAY;
 				win.SetMouseVisibility(true);
 			}
-			msg = "Press ENTER to Play!!!";
 			break;
 		case PLAY:
 			GameUpdate();
@@ -189,21 +186,36 @@ void Game::Start()
 				Reset();
 				state = PLAY;
 			}
-			msg = "GAME OVER!!! \nPress ENTER to Play Again!!!";
 			break;
 		}
 
-		ImGui::Begin("Score");
-		ImGui::Text("Total Score: %i", score);
-		ImGui::Text("current speed %f", craft_speed);
-		ImGui::Text(msg.c_str());
-		ImGui::End();
+		renderer.RenderObjects(win, cam.GetCameraView(), objects);
 
-		ImGui::Begin("FPS");
-		ImGui::Text("ElapsedTime: %f ms", ElapsedTime());
-		ImGui::Text("FPS: %f\n", glm::round(1 / (ElapsedTime() / 1000.0f)));
-		ImGui::End();
+		// render UI
 
+		glm::vec2 win_size = win.WindowSize();
+		renderer.RenderText(win, win_size.x - 330, 10,
+			std::string("FPS: ") + std::to_string((int)glm::round(1 / (ElapsedTime() / 1000.0f))), 
+			40);
+
+		renderer.RenderText(win, 10, 10, std::string("Score: ") + std::to_string(score), 40);
+
+		if (state == START)
+		{
+			renderer.RenderText(win,
+				win_size.x / 2.0f - 550.0f, win_size.y / 2.0f - 200.0f, 
+				"Press ENTER to Play!!!", 50);
+		}
+
+		if (state == GAMEOVER)
+		{
+			renderer.RenderText(win,
+				win_size.x / 2.0f - 550.0f, win_size.y / 2.0f - 100.0f,
+				std::string("     GAME OVER!!!     \n") +
+				std::string("Press ENTER to Play!!!"), 50);
+		}
+
+	
 		EndFrame();
 
 		if (win.KeyIsPress(GLFW_KEY_ESCAPE))
@@ -294,14 +306,6 @@ void Game::MoveCraft()
 
 	objects[0].transform = glm::inverse(glm::lookAt(craft_pos, craft_pos + craft_facing, craft_up)) * rotate;
 
-}
-
-
-
-void Game::OnCollision_ScorePoint()
-{
-	score += 10;
-	craft_speed += 1;
 }
 
 glm::vec2 Game::Input()

@@ -7,7 +7,10 @@ namespace GL
 	/*
 	*  Initialize GLEW
 	*
+	*  in the first call
 	*  returns true only if glewInit() retruns GLEW_OK.
+	* 
+	*  then it returns false
 	*/
 	bool InitOpenGL();
 

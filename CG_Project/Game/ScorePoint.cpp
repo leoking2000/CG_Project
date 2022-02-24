@@ -28,7 +28,7 @@ void ScorePoint::Tick(const glm::vec3& craft_pos, f32 dt, std::function<void()> 
 	}
 	else // if ScorePoint is active
 	{
-		if (glm::distance(craft_pos, m_pos) < size)
+		if (glm::distance(craft_pos, m_pos) <= 1.5f * size)
 		{
 			// deactivate object
 			go.model_name = "";

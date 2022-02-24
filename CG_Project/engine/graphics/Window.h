@@ -34,7 +34,9 @@ namespace GL
 		void SetMouseVisibility(bool visible);
 
 	public:
-		GLFWwindow* glfw_window = nullptr;
 		FrameBuffer* fb;
+
+		// glfw_window is public in order to initialize imgui and swap buffers in the engine
+		GLFWwindow* glfw_window = nullptr;
 	};
 }

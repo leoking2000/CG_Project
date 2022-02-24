@@ -11,7 +11,7 @@ namespace GL
 		if (!first_call)
 		{
 			LogError("InitOpenGL was called more than one time!!!");
-			return true;
+			return false;
 		}
 
 		first_call = false;

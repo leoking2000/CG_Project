@@ -17,7 +17,9 @@ namespace GL
 		Renderer(const Renderer&) = delete;
 		Renderer& operator=(const Renderer&) = delete;
 	public:
-		void RenderTo(Window& win,const glm::mat4& cam_view, const std::vector<GameObject>& gameObjects);
+		void RenderObjects(Window& win,const glm::mat4& cam_view, const std::vector<GameObject>& gameObjects);
+		void RenderToScreen(Window& win, float continous_time); // post proccess
+		void RenderText(Window& win, u32 x, u32 y, const std::string& text, f32 scale = 32.0f);
 	public:
 		// light
 		glm::mat4 light_proj;
@@ -55,8 +57,28 @@ namespace GL
 		// post process
 		Shader post_process{ "Shader/post_process.glsl" };
 		VertexArray vao_post_process;
+	private:
+		// text rendering
+		Texture font_tex{ "Shader/Consolas13x24.bmp", true };
+		static constexpr u32 font_width = 416;
+		static constexpr u32 font_height = 72;
 
-		void PostProcess(Window& win);
+		Shader text_shader{ "Shader/text.glsl" };
+
+		static constexpr u32 glyphWidth = 13;
+		static constexpr u32 glyphHeight = 24;
+		static constexpr char firstChar = ' ';
+		static constexpr char lastChar = '~';
+		static constexpr int nColumns = 32;
+		static constexpr int nRows = 3;
+
+		// [0, w-h] ---> [0, 1]
+		glm::vec2 normalizeTexCoords(const glm::vec2& coord);
+
+		void RenderChar(Window& win, u32 x, u32 y, char c, f32 scale);
+
+		// returns true if c is printable.
+		bool GetCharacterTexCoords(char c, glm::vec2& coord);
 	};
 }
 

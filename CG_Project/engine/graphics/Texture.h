@@ -11,7 +11,7 @@ namespace GL
 	class Texture
 	{
 	public:
-		Texture(const std::string& file_name);
+		Texture(const std::string& file_name, bool nearest = false);
 
 		Texture(const Texture& other) = delete;
 		Texture& operator=(const Texture& other) = delete;
@@ -21,7 +21,7 @@ namespace GL
 
 		~Texture();
 
-		void reload(const std::string& file_name);
+		void reload(const std::string& file_name, bool nearest = false);
 
 		void Bind(u32 slot = 0) const;
 		void UnBind() const;
