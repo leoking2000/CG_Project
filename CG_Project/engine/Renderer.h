@@ -19,7 +19,7 @@ namespace GL
 	public:
 		void RenderObjects(Window& win,const glm::mat4& cam_view, const std::vector<GameObject>& gameObjects);
 		void RenderToScreen(Window& win, float continous_time); // post proccess
-		void RenderText(Window& win, u32 x, u32 y, const std::string& text, f32 scale = 32.0f);
+		void RenderText(Window& win, u32 x, u32 y, const std::string& text, u32 scale = 32);
 	public:
 		// light
 		glm::mat4 light_proj;
@@ -75,7 +75,7 @@ namespace GL
 		// [0, w-h] ---> [0, 1]
 		glm::vec2 normalizeTexCoords(const glm::vec2& coord);
 
-		void RenderChar(Window& win, u32 x, u32 y, char c, f32 scale);
+		void RenderChar(Window& win, u32 x, u32 y, char c, u32 scale);
 
 		// returns true if c is printable.
 		bool GetCharacterTexCoords(char c, glm::vec2& coord);

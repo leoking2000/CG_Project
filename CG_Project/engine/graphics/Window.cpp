@@ -65,7 +65,10 @@ namespace GL
 
 	Window::~Window()
 	{
-		delete fb; // this needs to be deleted before we destory the window
+		// frame buffer needs to be deleted before we destory the window
+		// if we destory the window we would not have a valid opengl contex
+		// and glDeleteFramebuffers will cause an error.
+		delete fb;
 
 		glfwDestroyWindow(glfw_window);
 		glfwTerminate();

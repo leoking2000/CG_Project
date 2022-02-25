@@ -194,7 +194,7 @@ void Game::Start()
 		// render UI
 
 		glm::vec2 win_size = win.WindowSize();
-		renderer.RenderText(win, win_size.x - 330, 10,
+		renderer.RenderText(win, (u32)win_size.x - 330, 10,
 			std::string("FPS: ") + std::to_string((int)glm::round(1 / (ElapsedTime() / 1000.0f))), 
 			40);
 
@@ -203,14 +203,14 @@ void Game::Start()
 		if (state == START)
 		{
 			renderer.RenderText(win,
-				win_size.x / 2.0f - 550.0f, win_size.y / 2.0f - 200.0f, 
+				(u32)(win_size.x / 2.0f - 550.0f), (u32)(win_size.y / 2.0f - 200.0f),
 				"Press ENTER to Play!!!", 50);
 		}
 
 		if (state == GAMEOVER)
 		{
 			renderer.RenderText(win,
-				win_size.x / 2.0f - 550.0f, win_size.y / 2.0f - 100.0f,
+				(u32)(win_size.x / 2.0f - 550.0f), (u32)(win_size.y / 2.0f - 100.0f),
 				std::string("     GAME OVER!!!     \n") +
 				std::string("Press ENTER to Play!!!"), 50);
 		}

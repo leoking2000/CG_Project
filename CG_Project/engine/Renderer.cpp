@@ -120,7 +120,7 @@ namespace GL
 		win.fb->UnBind();
 	}
 
-	void Renderer::RenderText(Window& win, u32 x, u32 y, const std::string& text, f32 scale)
+	void Renderer::RenderText(Window& win, u32 x, u32 y, const std::string& text, u32 scale)
 	{
 		win.fb->Bind();
 		text_shader.Bind();
@@ -129,7 +129,7 @@ namespace GL
 		glm::vec2 win_size = win.WindowSize();
 
 		u32 curX = x;
-		u32 curY = win_size.y - y - scale;
+		u32 curY = (u32)win_size.y - y - scale;
 
 		for (u32 i = 0; i < text.size(); i++)
 		{
@@ -150,7 +150,7 @@ namespace GL
 		win.fb->UnBind();
 	}
 
-	void Renderer::RenderChar(Window& win, u32 x, u32 y, char c, f32 scale)
+	void Renderer::RenderChar(Window& win, u32 x, u32 y, char c, u32 scale)
 	{
 		// find tex coords
 		glm::vec2 coords;
@@ -169,13 +169,13 @@ namespace GL
 		glm::vec2 coord3 = normalizeTexCoords({ coords.x + glyphWidth, coords.y - glyphHeight });
 
 		float vertexs[] = {
-			x        , y        , coord2.x, coord2.y,
-			x + scale, y        , coord3.x, coord3.y,
-			x        , y + scale, coord0.x, coord0.y,
+			float(x        ), float(y        ), coord2.x, coord2.y,
+			float(x + scale), float(y        ), coord3.x, coord3.y,
+			float(x        ), float(y + scale), coord0.x, coord0.y,
 
-			x + scale, y        , coord3.x, coord3.y,
-			x + scale, y + scale, coord1.x, coord1.y,
-			x        , y + scale, coord0.x, coord0.y
+			float(x + scale), float(y        ), coord3.x, coord3.y,
+			float(x + scale), float(y + scale), coord1.x, coord1.y,
+			float(x        ), float(y + scale), coord0.x, coord0.y
 		};
 
 		VertexBuffer vertexBuffer(vertexs, sizeof(vertexs));

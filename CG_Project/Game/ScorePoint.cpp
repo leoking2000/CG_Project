@@ -2,7 +2,7 @@
 
 ScorePoint::ScorePoint(glm::vec3 pos, std::string model, std::vector<GL::GameObject>& objects)
 {
-	m_index = objects.size();
+	m_index = (u32)objects.size();
 	m_pos = pos;
 	m_model = std::move(model);
 
@@ -11,7 +11,7 @@ ScorePoint::ScorePoint(glm::vec3 pos, std::string model, std::vector<GL::GameObj
 
 void ScorePoint::Tick(const glm::vec3& craft_pos, f32 dt, std::function<void()> OnCollition, std::vector<GL::GameObject>& objects)
 {
-	GL::GameObject& go = objects[m_index];
+	GL::GameObject& go = objects[m_index]; // get the gameobject
 
 	// if ScorePoint is inactive
 	if (go.model_name.empty())
