@@ -13,6 +13,18 @@ namespace GL
 		ElementType arr[1] = { FLOAT2 };
 		Layout<1> layout(arr);
 		vao_post_process.AddBuffer(vbo_post_process, layout);
+
+		light_proj = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 1000.0f);
+		light_view = glm::lookAt(glm::vec3(0.0f, 500.0f, 0.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+		light_dir = -glm::normalize(glm::vec3(0.0f, 500.0f, 0.0f));
+		lightSpaceMatrix = light_proj * light_view;
+		shadow_bias = 0.0000005f;
+
+		fov_angle = glm::radians(45.0f);
+		min_z = 0.5f;
+		max_z = 800.0f;
+
+		clear_color = glm::vec3(0.0f, 0.0f, 0.0f);
 	}
 
 	void Renderer::RenderObjects(Window& win, const glm::mat4& cam_view, const std::vector<GameObject>& gameObjects)
