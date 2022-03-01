@@ -1,8 +1,11 @@
 #include "Game/Game.h"
+#include "Game/Sponza.h"
 
 int main()
 {
-	Game game;
+	//Game game;
+	Sponza game;
+
 	game.Start();
 
 	return 0;

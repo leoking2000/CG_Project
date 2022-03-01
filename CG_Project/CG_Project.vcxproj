@@ -164,6 +164,7 @@
     <ClCompile Include="engine\utilities\log.cpp" />
     <ClCompile Include="engine\Renderer.cpp" />
     <ClCompile Include="Game\ScorePoint.cpp" />
+    <ClCompile Include="Game\Sponza.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\GameObject.h" />
@@ -188,6 +189,7 @@
     <ClInclude Include="engine\utilities\GL_Math.h" />
     <ClInclude Include="engine\Renderer.h" />
     <ClInclude Include="Game\ScorePoint.h" />
+    <ClInclude Include="Game\Sponza.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

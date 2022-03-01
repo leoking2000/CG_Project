@@ -226,6 +226,8 @@ namespace GL
 		vao_post_process.Bind();
 
 		win.fb->BindColorTexture(0);
+		//shadow_map.BindDepthTexture(0);
+
 		post_process.SetUniform("uniform_texture", 0);
 		post_process.SetUniform("uniform_time", continous_time);
 
