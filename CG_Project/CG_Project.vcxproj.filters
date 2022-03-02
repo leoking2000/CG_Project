@@ -69,12 +69,6 @@
     <ClCompile Include="engine\Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Game\ScorePoint.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Game\Sponza.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\Engine.h">
@@ -138,12 +132,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="engine\Renderer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\ScorePoint.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Game\Sponza.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
