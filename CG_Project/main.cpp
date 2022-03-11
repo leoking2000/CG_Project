@@ -1,10 +1,8 @@
 #include "Game/Game.h"
-#include "Game/Sponza.h"
 
 int main()
 {
-	//Game game;
-	Sponza game;
+	Game game;
 
 	game.Start();
 

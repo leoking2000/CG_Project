@@ -160,9 +160,9 @@
     <ClCompile Include="engine\graphics\VertexArray.cpp" />
     <ClCompile Include="engine\graphics\VertexBuffer.cpp" />
     <ClCompile Include="engine\graphics\Window.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="engine\utilities\log.cpp" />
     <ClCompile Include="engine\Renderer.cpp" />
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine\GameObject.h" />
