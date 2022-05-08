@@ -4,6 +4,8 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+#include <glm/gtx/intersect.hpp>
+
 namespace GL
 {
 	std::vector<ObjLoader::Mesh> ObjLoader::Load(const char* filename)
@@ -127,13 +129,14 @@ namespace GL
 			glm::vec3 b = vertices[indice_b].pos;
 			glm::vec3 c = vertices[indice_c].pos;
 
-			glm::vec3 barycoord;
+			glm::vec2 barycoord;
+			float t;
 
 			// check for intersection for that triangle
-			if (glm::intersectRayTriangle(origin, dir, a, b, c, barycoord))
+			if (glm::intersectRayTriangle(origin, dir, a, b, c, barycoord, t))
 			{
 				// find the position of the intersection
-				const glm::vec3 temp_isect = a * barycoord.x + b * barycoord.y + c * barycoord.z;
+				const glm::vec3 temp_isect = origin + t * dir;
 
 				// find the distance between the origin on the intersection
 				f32 temp_distance = glm::distance(origin, temp_isect);

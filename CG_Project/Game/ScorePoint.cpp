@@ -6,7 +6,7 @@ ScorePoint::ScorePoint(glm::vec3 pos, std::string model, std::vector<GL::GameObj
 	m_pos = pos;
 	m_model = std::move(model);
 
-	objects.emplace_back(m_model, glm::translate(pos) * glm::scale(glm::vec3(size)));
+	objects.emplace_back(m_model, glm::translate(glm ::mat4(1.0f), pos) * glm::scale(glm::mat4(1.0f), glm::vec3(size)));
 }
 
 void ScorePoint::Tick(const glm::vec3& craft_pos, f32 dt, std::function<void()> OnCollition, std::vector<GL::GameObject>& objects)

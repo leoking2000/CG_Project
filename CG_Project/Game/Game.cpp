@@ -37,7 +37,7 @@ collision_hull(GL::ObjLoader::Load("assets/collision_hull.obj")[0])
 
 	// make on "broken" craft
 	objects.emplace_back("assets/craft.obj", 
-		glm::translate(glm::vec3(-230.0f, 5.0f, -180.0f)) *
+		glm::translate(glm::mat4(1.0f), glm::vec3(-230.0f, 5.0f, -180.0f)) *
 		glm::rotate(glm::mat4(1.0f), PI / 6.0f + 0.06f, glm::vec3(0.0f, 1.0f, 0.0f)) *
 		glm::rotate(glm::mat4(1.0f), -PI / 6.0f, glm::vec3(0.0f, 0.0f, 1.0f)));
 
@@ -47,93 +47,93 @@ collision_hull(GL::ObjLoader::Load("assets/collision_hull.obj")[0])
 
 	// make the grass
 	objects.emplace_back("assets/Phormium_3.obj",
-		glm::translate(glm::vec3(-70.0f, -2.0f, -10.0f)) *
-		glm::scale(glm::vec3(2.0f))
+		glm::translate(glm::mat4(1.0f), glm::vec3(-70.0f, -2.0f, -10.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(2.0f))
 	);
 
 	objects.emplace_back("assets/Phormium_1.obj",
-		glm::translate(glm::vec3( 10.0f, -2.0f, -40.0f)) *
-		glm::scale(glm::vec3(2.0f))
+		glm::translate(glm::mat4(1.0f), glm::vec3( 10.0f, -2.0f, -40.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(2.0f))
 	);
 
 	objects.emplace_back("assets/Phormium_3.obj",
-		glm::translate(glm::vec3(75.0f, 3.0f, -40.0f)) *
-		glm::scale(glm::vec3(1.5f)) *
+		glm::translate(glm::mat4(1.0f), glm::vec3(75.0f, 3.0f, -40.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(1.5f)) *
 		glm::rotate(glm::mat4(1.0f), PI / 6.0f, glm::vec3(0.0f, 0.0f, 1.0f))
 	);
 
 	objects.emplace_back("assets/Phormium_1.obj",
-		glm::translate(glm::vec3(100.0f, 0.0f, 70.0f)) *
-		glm::scale(glm::vec3(2.0f))
+		glm::translate(glm::mat4(1.0f), glm::vec3(100.0f, 0.0f, 70.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(2.0f))
 	);
 
 	objects.emplace_back("assets/Phormium_1.obj",
-		glm::translate(glm::vec3(130.0f, 5.0f, 145.0f)) *
-		glm::scale(glm::vec3(2.0f)) *
+		glm::translate(glm::mat4(1.0f), glm::vec3(130.0f, 5.0f, 145.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(2.0f)) *
 		glm::rotate(glm::mat4(1.0f), PI / 6.0f, glm::vec3(0.0f, 0.0f, 1.0f))
 	);
 
 	objects.emplace_back("assets/Phormium_1.obj",
-		glm::translate(glm::vec3(-140.0f, -2.0f, 100.0f)) *
-		glm::scale(glm::vec3(3.0f))
+		glm::translate(glm::mat4(1.0f), glm::vec3(-140.0f, -2.0f, 100.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(3.0f))
 	);
 
 	objects.emplace_back("assets/Phormium_1.obj",
-		glm::translate(glm::vec3(-160.0f, 3.0f, -30.0f)) *
-		glm::scale(glm::vec3(2.0f)) *
+		glm::translate(glm::mat4(1.0f), glm::vec3(-160.0f, 3.0f, -30.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(2.0f)) *
 		glm::rotate(glm::mat4(1.0f), PI / 6.0f, glm::vec3(0.0f, 0.0f, 1.0f))
 	);
 
 	objects.emplace_back("assets/Phormium_1.obj",
-		glm::translate(glm::vec3(-280.0f, 5.0f, 10.0f)) *
-		glm::scale(glm::vec3(4.0f)) *
+		glm::translate(glm::mat4(1.0f), glm::vec3(-280.0f, 5.0f, 10.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(4.0f)) *
 		glm::rotate(glm::mat4(1.0f), -PI / 4.0f, glm::vec3(0.0f, 0.0f, 1.0f))
 	);
 
 	objects.emplace_back("assets/Phormium_3.obj",
-		glm::translate(glm::vec3(-40.0f, 5.0f, -90.0f)) *
-		glm::scale(glm::vec3(2.0f)) *
+		glm::translate(glm::mat4(1.0f), glm::vec3(-40.0f, 5.0f, -90.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(2.0f)) *
 		glm::rotate(glm::mat4(1.0f), PI / 4.0f, glm::vec3(0.0f, 0.0f, 1.0f))
 	);
 
 	objects.emplace_back("assets/Phormium_1.obj",
-		glm::translate(glm::vec3(-160.0f, 2.0f, -160.0f)) *
-		glm::scale(glm::vec3(5.0f))
+		glm::translate(glm::mat4(1.0f), glm::vec3(-160.0f, 2.0f, -160.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(5.0f))
 	);
 
 	objects.emplace_back("assets/Phormium_3.obj",
-		glm::translate(glm::vec3(-230.0f, 1.5f, -250.0f)) *
-		glm::scale(glm::vec3(1.0f))
+		glm::translate(glm::mat4(1.0f), glm::vec3(-230.0f, 1.5f, -250.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(1.0f))
 	);
 
 	objects.emplace_back("assets/Phormium_1.obj",
-		glm::translate(glm::vec3(0.0f, -3.0f, -250.0f)) *
-		glm::scale(glm::vec3(2.0f))
+		glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -3.0f, -250.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(2.0f))
 	);
 
 	objects.emplace_back("assets/Phormium_1.obj",
-		glm::translate(glm::vec3(-50.0f, 2.0f, -320.0f)) *
-		glm::scale(glm::vec3(2.0f))
+		glm::translate(glm::mat4(1.0f), glm::vec3(-50.0f, 2.0f, -320.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(2.0f))
 	);
 
 	objects.emplace_back("assets/Phormium_1.obj",
-		glm::translate(glm::vec3(-100.0f, 2.0f, -270.0f)) *
-		glm::scale(glm::vec3(3.0f))
+		glm::translate(glm::mat4(1.0f), glm::vec3(-100.0f, 2.0f, -270.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(3.0f))
 	);
 
 	objects.emplace_back("assets/Phormium_1.obj",
-		glm::translate(glm::vec3(140.0f, 5.0f, -350.0f)) * 
-		glm::scale(glm::vec3(3.0f))
+		glm::translate(glm::mat4(1.0f), glm::vec3(140.0f, 5.0f, -350.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(3.0f))
 	);
 
 	objects.emplace_back("assets/Phormium_3.obj",
-		glm::translate(glm::vec3(170.0f, 5.0f, -160.0f)) *
-		glm::scale(glm::vec3(3.0f))
+		glm::translate(glm::mat4(1.0f), glm::vec3(170.0f, 5.0f, -160.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(3.0f))
 	);
 
 	objects.emplace_back("assets/Phormium_3.obj",
-		glm::translate(glm::vec3(200.0f, 5.0f, -300.0f)) *
-		glm::scale(glm::vec3(3.0f))
+		glm::translate(glm::mat4(1.0f), glm::vec3(200.0f, 5.0f, -300.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(3.0f))
 	);
 
 	// make sphere game objects
@@ -256,7 +256,7 @@ void Game::GameUpdate()
 	bool collition2 = collision_hull.intersectRay_Local(craft_pos + glm::vec3(3.0f, 0.0f, 0.0f), craft_facing, d2);
 	bool collition3 = collision_hull.intersectRay_Local(craft_pos + glm::vec3(-3.0f, 0.0f, 0.0f), craft_facing, d3);
 
-	if ((collition1 && d1 < 500) || (collition2 && d2 < 500) || (collition3 && d3 < 500))
+	if ((collition1 && d1 < 5) || (collition2 && d2 < 5) || (collition3 && d3 < 5))
 	{
 		state = GAMEOVER;
 	}
