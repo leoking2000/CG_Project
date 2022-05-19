@@ -2,16 +2,16 @@
 
 Game::Game()
 	:
-GL::Engine(1600, 900, "Code along Project", true)
+GL::Engine(1600, 900, "CG Project", true)
 {
 	//
 	// renderer settings
 	//
-	renderer.light_proj = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 1000.0f);
-	renderer.light_view = glm::lookAt(glm::vec3(0.0f, 450.0f, -150.0f), glm::vec3(0.0f, 0.0f, -130.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-	renderer.light_dir = -glm::normalize(glm::vec3(0.0f, 500.0f, -100.0f));
+	renderer.light_proj = glm::perspective(glm::radians(90.0f), 1.0f, 0.1f, 100.0f);
+	renderer.light_view = glm::lookAt(glm::vec3(0.0f, 25.0f, -25.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+	renderer.light_dir = -glm::normalize(glm::vec3(0.0f, 25.0f, -25.0f));
 	renderer.lightSpaceMatrix = renderer.light_proj * renderer.light_view;
-	renderer.shadow_bias = 0.0000005f;
+	renderer.shadow_bias = 0.00005f;
 
 	renderer.fov_angle = glm::radians(45.0f);
 	renderer.min_z = 0.5f;
@@ -23,6 +23,19 @@ GL::Engine(1600, 900, "Code along Project", true)
 	// Set up game
 	//
 
+	GL::ModelManager::Make("sphere", GL::GenarateSphere()).meshs[0].defaultColor = glm::vec3(0.0f, 0.0f, 1.0f);
+	GL::ModelManager::Make("plane", GL::GenarateSphere()).meshs[0].defaultColor = glm::vec3(1.0f, 1.0f, 1.0f);
+
+	GL::ModelManager::GetModel("sphere").meshs[0].glossiness = 0.0f;
+	GL::ModelManager::GetModel("sphere").meshs[0].metallic = 0.0f;
+
+	objects.emplace_back("sphere", glm::scale(glm::mat4(1.0f), glm::vec3(2.0f, 2.0f, 2.0f)));
+
+	objects.emplace_back("plane", glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, -10.0f, 0.0f)) *
+		glm::scale(glm::mat4(1.0f), glm::vec3(20.0f, 1.0f, 20.0f)));
+
+	cam.pos = glm::vec3(0.0f, 0.0f, 5.0f);
+
 }
 
 void Game::Start()
@@ -31,10 +44,22 @@ void Game::Start()
 	{
 		NewFrame();
 
+		f32 dt = ElapsedTime() / 1000.0f;
+		cam.Update(win, dt);
+
 		renderer.RenderObjects(win, cam.GetCameraView(), objects);
-		renderer.RenderText(win, 0, 0, "Hello World!!!", 40);
+		renderer.RenderText(win, 0, 0, 
+			"X " + std::to_string(cam.pos.x) + "\n" +
+			"Y " + std::to_string(cam.pos.y) + "\n" + 
+			"Z " + std::to_string(cam.pos.z) + "\n"
+			, 40);
 
 		EndFrame();
+
+		if (win.KeyIsPress(GLFW_KEY_ESCAPE))
+		{
+			win.CloseWindow();
+		}
 	}
 }
 
